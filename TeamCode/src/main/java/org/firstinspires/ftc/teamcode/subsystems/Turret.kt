@@ -10,7 +10,7 @@ import kotlin.math.PI
 import kotlin.math.atan2
 
 object Turret {
-
+    //TODO change range for 120 deg
     var HIGHER_LIMIT = 1.0//85 turning right
     var LOWER_LIMIT = 0.0//85 turing left
     var FORWARD_POSITION = 0.5//0 degrees
