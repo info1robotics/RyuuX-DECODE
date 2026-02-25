@@ -17,7 +17,7 @@ class JointTesting : LinearOpMode() {
     private val actionQueue = ActionQueue()
     companion object {
         @JvmField
-        var position = Joint.INIT_POSITION
+        var position = Joint.COLLECT_POSITION
 
 
     }

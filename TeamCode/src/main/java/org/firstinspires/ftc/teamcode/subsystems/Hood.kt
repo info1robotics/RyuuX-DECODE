@@ -10,8 +10,8 @@ object Hood {
     //TODO reverse 53 and 33
 
     var offset = 0.0
-    var HIGHER_LIMIT = 0.68 //~33 degrees
-    var LOWER_LIMIT = 0.0   //~53 degrees
+    var HIGHER_LIMIT = 0.85 //~33 degrees
+    var LOWER_LIMIT = 0.00  //~53 degrees   0.03
 
     var FAR_DEGREE = 40.0
 
@@ -45,9 +45,9 @@ object Hood {
 
 
     fun calculate(distance: Double): Double {
-        val y = 0.9551378 +
-                (-0.02571194 - 0.9551378) /
-                (1 + (distance / 168.7368).pow(3.657507))
+        val y = 1.29798 +
+                (-0.09011866 - 1.29798) /
+                (1 + (distance / 268.5674).pow(1.731773))
 
         return MathFunctions.clamp(y, 0.0, 1.0)
     }

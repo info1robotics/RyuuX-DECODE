@@ -20,7 +20,7 @@ object Shooter {
     const val MAX_VELOCITY = 1700.0//overshoots
     const val FAR_POWER=1400
     const val SUPER_CYCLE_POWER = 3175.0
-    val offset = 100.0// offset the function for more power
+    val offset = 75.0// offset the function for more power
 
 
     private val BASE_PIDF = PIDFCoefficients(190.0, 0.0, 0.0, 14.9) // Base feedforward at 12V
@@ -29,8 +29,8 @@ object Shooter {
         motorShooterFirst = hardwareMap.get(DcMotorEx::class.java, "motorShooterFirst")
         motorShooterSecond = hardwareMap.get(DcMotorEx::class.java, "motorShooterSecond")
 
-        motorShooterFirst.direction = DcMotorSimple.Direction.REVERSE
-        motorShooterSecond.direction = DcMotorSimple.Direction.REVERSE
+        motorShooterFirst.direction = DcMotorSimple.Direction.FORWARD
+        motorShooterSecond.direction = DcMotorSimple.Direction.FORWARD
 
         motorShooterFirst.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
         motorShooterFirst.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
@@ -116,9 +116,9 @@ object Shooter {
     }
 
     fun calculate(distance: Double): Double {
-        val value = 465451200 +
-                (2481.977 - 465451200) /
-                (1 + (distance / 43103.35).pow(2.41399)) + offset
+        val value = 3845.331 +
+                (2519.676 - 3845.331) /
+                (1 + (distance / 187.4814).pow(3.621187)) + offset
 
         return MathFunctions.clamp(value, 0.0, MAX_RPM)
     }

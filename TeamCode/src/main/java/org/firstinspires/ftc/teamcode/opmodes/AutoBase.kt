@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.openftc.easyopencv.OpenCvCamera
 import org.openftc.easyopencv.OpenCvPipeline
 
-abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadians(0.0)),private val allianceColour:Colours, private val turretOffset:Double) : LinearOpMode() {
+abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadians(0.0)),private val allianceColour:Colours) : LinearOpMode() {
 
     var far = false//play far or near
     lateinit var gamepadEx1: GamepadEx
@@ -88,7 +88,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     }
 
     fun onStartTick() {
-        turretLock()
+        //turretLock()
         distance = Pinpoint.distance(follower.pose.x,follower.pose.y, allianceColour)
         power = Shooter.calculate(distance)
         deg = Hood.calculate(distance)

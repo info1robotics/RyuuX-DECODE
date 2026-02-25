@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepuntil
 
 @Autonomous
 @Disabled
-class AutoBlank : AutoBase(Pose(0.0,0.0, Math.toRadians(0.0)),Colours.RED,0.0) {
+class AutoBlank : AutoBase(Pose(0.0,0.0, Math.toRadians(0.0)),Colours.RED) {
 
     fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))

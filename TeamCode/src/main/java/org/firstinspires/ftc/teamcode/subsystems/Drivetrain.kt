@@ -15,7 +15,7 @@ import kotlin.math.sin
 @Config
 
 object Drivetrain {
-    private var LATERAL_MULTIPLIER = 1.5
+    private var LATERAL_MULTIPLIER = 1.4
 
     lateinit var fl: DcMotor
     lateinit var fr: DcMotor

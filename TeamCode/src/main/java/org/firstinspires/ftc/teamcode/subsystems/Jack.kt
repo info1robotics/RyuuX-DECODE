@@ -7,10 +7,9 @@ import com.qualcomm.robotcore.hardware.ServoImplEx
 
 object Jack {
 
-    var offset = -0.02
-    var INIT_POSITION = 0.91
-    var HIGHER_LIMIT = 0.91
-    var LOWER_LIMIT = 0.6
+    var offset = -0.00
+    var INIT_POSITION = 0.15
+    var PARKED_POSITION = 0.8
     var STEP = 0.05
     private lateinit var servoJackFirst: ServoImplEx
     private lateinit var servoJackSecond: ServoImplEx
@@ -26,8 +25,8 @@ object Jack {
     }
 
     fun setPosition(position: Double) {
-        servoJackFirst.position = position.coerceIn(LOWER_LIMIT, HIGHER_LIMIT)
-        servoJackSecond.position = (position + offset).coerceIn(LOWER_LIMIT, HIGHER_LIMIT)
+        servoJackFirst.position = position
+        servoJackSecond.position = (position + offset)
     }
 
     fun getPosition(): Double {

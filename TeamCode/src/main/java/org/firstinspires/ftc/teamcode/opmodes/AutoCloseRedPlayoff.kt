@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Disabled
 @Autonomous
-class AutoCloseRedPlayoff : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED,0.03) {//32 cm from tile intersection
+class AutoCloseRedPlayoff : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {//32 cm from tile intersection
 fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
     val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
     follower.holdPoint(temp)

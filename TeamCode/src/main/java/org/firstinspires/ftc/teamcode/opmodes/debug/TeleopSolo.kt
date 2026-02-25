@@ -94,19 +94,18 @@ class TeleopSolo : LinearOpMode() {
 
     private fun handleInputJack()
     {
-        if(gamepad1.dpad_up) Jack.setPosition(Jack.LOWER_LIMIT)
-        if(gamepad1.dpad_down) Jack.setPosition(Jack.HIGHER_LIMIT)
+        if(gamepad1.dpad_up) Jack.setPosition(Jack.PARKED_POSITION)
+        if(gamepad1.dpad_down) Jack.setPosition(Jack.INIT_POSITION)
     }
     var far = false
     var power = 0.0
     private fun handleInputShooter() {
 
+        if(gamepadEx1.getButtonDown("x") && !transition)
+            Shooter.charge(power)
+
         if(distance<max)
         {
-
-            if(!transition && Intake.isFull())
-                Shooter.charge(power)
-
             far = false
             
             Hood.setPosition(Hood.calculate(distance))
@@ -114,6 +113,7 @@ class TeleopSolo : LinearOpMode() {
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
+
                 actionQueue.add(delay)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
@@ -138,7 +138,7 @@ class TeleopSolo : LinearOpMode() {
 
     }
     var hold = false
-    private fun handleInputTurret() {
+    private fun handleInputTurret() {//TODO when the lock function is calibrated change the heading range
 
         if(gamepadEx1.getButtonDown("y") && !hold) hold=true
         else if(gamepadEx1.getButtonDown("y") && hold) hold=false
@@ -147,14 +147,14 @@ class TeleopSolo : LinearOpMode() {
         {
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//previously 96 -60
+                if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
                 else
                     Turret.setPosition(Turret.FORWARD_POSITION)
             }
             else
             {
-                if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)//previously 96 -60
+                if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-56)//previously 96 -60
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
                 else
                     Turret.setPosition(Turret.FORWARD_POSITION)

@@ -16,7 +16,7 @@ class JackTesting : LinearOpMode() {
     private val actionQueue = ActionQueue()
     companion object {
         @JvmField
-        var position = Jack.HIGHER_LIMIT
+        var position = Jack.INIT_POSITION
 
         @JvmField
         var offset = Jack.offset

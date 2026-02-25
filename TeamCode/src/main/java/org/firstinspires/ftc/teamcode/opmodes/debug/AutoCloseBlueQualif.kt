@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Disabled
 @Autonomous
-class AutoCloseBlueQualif : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.BLUE,-0.02) {
+class AutoCloseBlueQualif : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.BLUE) {
 
     fun turnTo(degrees: Double) {
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))

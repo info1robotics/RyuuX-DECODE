@@ -50,6 +50,8 @@ class Teleop : LinearOpMode() {
     var primaryRotationPower = 0.0
     var secondaryRotationPower = 0.0
     var delay = 0L
+    var rawHeading = 0.0
+    var correctedHeading = 0.0
 
     private fun handleInputDrivetrain()
     {
@@ -94,7 +96,7 @@ class Teleop : LinearOpMode() {
                 else if(!Intake.isEmptyTop())
                     Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(0.2))
                 else
-                    Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(0.8))
+                    Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(1.0))
             }
 
             if(gamepad2.right_bumper)
@@ -107,18 +109,18 @@ class Teleop : LinearOpMode() {
     }
     private fun handleInputJack()
     {
-        if(gamepad2.dpad_up) Jack.setPosition(Jack.LOWER_LIMIT)
-        if(gamepad2.dpad_down) Jack.setPosition(Jack.HIGHER_LIMIT)
+        if(gamepad2.dpad_up) Jack.setPosition(Jack.PARKED_POSITION)
+        if(gamepad2.dpad_down) Jack.setPosition(Jack.INIT_POSITION)
     }
     var far = false
     var power = 0.0
     private fun handleInputShooter() {
 
+        if(gamepadEx1.getButtonDown("x") && !transition)
+            Shooter.charge(power)
+
         if(distance<max)
         {
-            if(!transition && Intake.isFull())
-                Shooter.charge(power)
-
             far = false
             Hood.setPosition(Hood.calculate(distance))
             if(gamepadEx1.getButtonDown("a"))
@@ -140,7 +142,8 @@ class Teleop : LinearOpMode() {
                     }
             }
         }
-        if(transition)
+        else far  =true
+        if(transition && distance<max)
             Shooter.setRPM(power)
 
     }
@@ -151,25 +154,26 @@ class Teleop : LinearOpMode() {
         if(gamepadEx2.getButtonDown("y") && !hold) hold=true
         else if(gamepadEx2.getButtonDown("y") && hold) hold=false
 
-        if(!hold && distance < max)
+        if(!hold && distance < 225)
         {
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(follower.pose.heading)<180 && Math.toDegrees(follower.pose.heading)>60)//previously 96 -60
-                    Turret.lockToTarget(follower.pose.x,follower.pose.y,follower.pose.heading,allianceColour,0.0)
+                if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//
+                    Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
                 else
                     Turret.setPosition(Turret.FORWARD_POSITION)
             }
             else
             {
-                if(Math.toDegrees(follower.pose.heading)<96 && Math.toDegrees(follower.pose.heading)>-60)//previously 96 -60
-                    Turret.lockToTarget(follower.pose.x,follower.pose.y,follower.pose.heading,allianceColour,0.0)
+                if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-56)//previously 96 -60
+                    Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
                 else
                     Turret.setPosition(Turret.FORWARD_POSITION)
             }
 
         }
         else
+
             Turret.setPosition(Turret.FORWARD_POSITION)
     }
     var wasSelected = false
@@ -252,6 +256,12 @@ class Teleop : LinearOpMode() {
             delay = if(distance<=175) 0
             else if(distance <200) 300
             else 600
+
+            rawHeading = follower.pose.heading
+            correctedHeading = if(rawHeading < 0)
+                Math.PI + (rawHeading + Math.PI )
+            else
+                rawHeading
 
             log.add("choose alliance colour RED/BLUE by dpad left/right",allianceColour.toString())
             //Limelight.getTx()?.let { log.add("tx", it) }

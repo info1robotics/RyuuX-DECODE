@@ -15,7 +15,7 @@ object Turret {
     var LOWER_LIMIT = 0.0//85 turing left
     var FORWARD_POSITION = 0.5//0 degrees
 
-    private lateinit var servoTurretRight: ServoImplEx//axon mini mk2 gear ratio 24-50
+    private lateinit var servoTurretRight: ServoImplEx//axon max mk2 gear ratio 24-50
     private lateinit var servoTurretLeft: ServoImplEx
 
     fun init(hardwareMap: HardwareMap) {
@@ -65,7 +65,7 @@ object Turret {
             targetY = 130.0
         } else {
             targetX = 130.0
-                targetY =130.0
+            targetY =130.0
         }
 
         val dx = targetX - robotX
