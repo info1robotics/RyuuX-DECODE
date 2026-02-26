@@ -116,11 +116,12 @@ class Teleop : LinearOpMode() {
     var power = 0.0
     private fun handleInputShooter() {
 
-        if(gamepadEx1.getButtonDown("x") && !transition)
-            Shooter.charge(power)
+
 
         if(distance<max)
         {
+            if(Intake.isFull() && !transition)
+                Shooter.charge(power)
             far = false
             Hood.setPosition(Hood.calculate(distance))
             if(gamepadEx1.getButtonDown("a"))
@@ -128,18 +129,18 @@ class Teleop : LinearOpMode() {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
                 actionQueue.add(delay)//if this doesn t work 1200
+                {
+                    Intake.setPowerMain(1.0)
+                    Intake.setPowerSupport(1.0)
+                    actionQueue.add(700)
                     {
-                        Intake.setPowerMain(1.0)
-                        Intake.setPowerSupport(1.0)
-                        actionQueue.add(700)
-                        {
-                            Intake.stop()
-                            Shooter.setRPM(0.0)
-                            Wicket.setPosition(Wicket.CLOSE_POSITION)
-                            transition = false
-                            empty = 1.0
-                        }
+                        Intake.stop()
+                        Shooter.setRPM(0.0)
+                        Wicket.setPosition(Wicket.CLOSE_POSITION)
+                        transition = false
+                        empty = 1.0
                     }
+                }
             }
         }
         else far  =true
@@ -156,25 +157,24 @@ class Teleop : LinearOpMode() {
 
         if(!hold && distance < 225)
         {
+
+
+
+
+
+
             if(allianceColour==Colours.BLUE)
             {
                 if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
-                else
-                    Turret.setPosition(Turret.FORWARD_POSITION)
             }
             else
             {
                 if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-56)//previously 96 -60
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
-                else
-                    Turret.setPosition(Turret.FORWARD_POSITION)
             }
 
         }
-        else
-
-            Turret.setPosition(Turret.FORWARD_POSITION)
     }
     var wasSelected = false
     override fun runOpMode() {
@@ -213,7 +213,7 @@ class Teleop : LinearOpMode() {
             follower.update()
             if (gamepad1.dpad_right) {
                 allianceColour = Colours.RED
-               //Limelight.allianceTag = AprilTags.RED
+                //Limelight.allianceTag = AprilTags.RED
                 follower.pose = Pose(//TODO change to autopos
                     85.0,
                     83.0,
