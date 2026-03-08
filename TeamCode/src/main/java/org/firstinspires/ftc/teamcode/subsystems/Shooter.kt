@@ -20,7 +20,7 @@ object Shooter {
     const val MAX_VELOCITY = 1700.0//overshoots
     const val FAR_POWER=1400
     const val SUPER_CYCLE_POWER = 3175.0
-    val offset = 75.0// offset the function for more power
+    val offset = 105.0// offset the function for more power
 
 
     private val BASE_PIDF = PIDFCoefficients(190.0, 0.0, 0.0, 14.9) // Base feedforward at 12V

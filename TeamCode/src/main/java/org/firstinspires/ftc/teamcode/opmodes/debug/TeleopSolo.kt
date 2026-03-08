@@ -46,11 +46,14 @@ class TeleopSolo : LinearOpMode() {
     private var max = 205
     private var correctedHeading = 0.0
     private  var rawHeading = 0.0
+    var available = false
+    var compensation = 0.0
+
+    var hold = false
 
     var forwardPower =0.0
     var strafePower = 0.0
     var primaryRotationPower = 0.0
-    var secondaryRotationPower = 0.0
     var delay = 0L
 
     private fun handleInputDrivetrain()
@@ -74,9 +77,9 @@ class TeleopSolo : LinearOpMode() {
             {
                 Intake.setPowerMain(1.0)
                 if(Intake.isFull())
-                    Intake.setPowerSupport(0.0)
+                    Intake.setPowerSupport(0.1)
                 else if(!Intake.isEmptyTop())
-                    Intake.setPowerSupport(0.2)
+                    Intake.setPowerSupport(0.3)
                 else
                     Intake.setPowerSupport(1.0)
             }
@@ -101,20 +104,38 @@ class TeleopSolo : LinearOpMode() {
     var power = 0.0
     private fun handleInputShooter() {
 
-        if(gamepadEx1.getButtonDown("x") && !transition)
-            Shooter.charge(power)
-
         if(distance<max)
         {
+            if(((Intake.isUpper() && distance<230) || gamepadEx1.getButtonDown("x")) && !transition )
+                Shooter.charge(power)
+
             far = false
-            
             Hood.setPosition(Hood.calculate(distance))
-            if(gamepadEx1.getButtonDown("a"))
+            if(gamepadEx1.getButtonDown("a") && available)
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
 
                 actionQueue.add(delay)//if this doesn t work 1200
+                {
+                    Intake.setPowerMain(1.0)
+                    Intake.setPowerSupport(1.0)
+                    actionQueue.add(700)
+                    {
+                        Intake.stop()
+                        Shooter.setRPM(0.0)
+                        Wicket.setPosition(Wicket.CLOSE_POSITION)
+                        transition = false
+                        empty = 1.0
+                    }
+                }
+            }
+            if(gamepadEx1.getButtonDown("b") && available)
+            {
+                Wicket.setPosition(Wicket.OPEN_POSITION)
+                transition=true
+                Intake.setPowerSupport(-0.4)
+                actionQueue.add(300)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(1.0)
@@ -137,33 +158,45 @@ class TeleopSolo : LinearOpMode() {
             Shooter.setRPM(power)
 
     }
-    var hold = false
+
     private fun handleInputTurret() {//TODO when the lock function is calibrated change the heading range
 
         if(gamepadEx1.getButtonDown("y") && !hold) hold=true
         else if(gamepadEx1.getButtonDown("y") && hold) hold=false
 
+
         if(!hold && distance < 225)
         {
+
             if(allianceColour==Colours.BLUE)
             {
                 if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//
+                {
+                    available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
+                }
                 else
-                    Turret.setPosition(Turret.FORWARD_POSITION)
+                {
+                    available=false
+                    Turret.hold()
+                }
             }
             else
             {
-                if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-56)//previously 96 -60
+                if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-52)//previously 96 -60
+                {
+                    available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
+                }
+
                 else
-                    Turret.setPosition(Turret.FORWARD_POSITION)
+                {
+                    available=false
+                    Turret.hold()
+                }
             }
-
         }
-        else
-
-            Turret.setPosition(Turret.FORWARD_POSITION)
+        else Turret.hold()
     }
 
     override fun runOpMode() {
@@ -231,6 +264,7 @@ class TeleopSolo : LinearOpMode() {
                 Math.PI + (rawHeading + Math.PI )
             else
                 rawHeading
+
             //var ta = Limelight.getTa()
             //var distanceLL = ta?.let { Limelight.getDistanceToAprilTag(it) }
             distancePP = Pinpoint.distance(follower.pose.x,follower.pose.y, allianceColour)

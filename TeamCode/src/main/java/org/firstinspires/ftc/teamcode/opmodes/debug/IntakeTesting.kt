@@ -43,6 +43,8 @@ class IntakeTesting : LinearOpMode() {
             //log.add("Sensor colours", Intake.getColorReading())
             log.add("Is full",Intake.isFull())
             log.add("Is empty top",Intake.isEmptyTop())
+            log.add("Is empty mid",Intake.isEmptyMid())
+            log.add("Is empty bottom",Intake.isEmptyBottom())
             log.tick()
         }
     }

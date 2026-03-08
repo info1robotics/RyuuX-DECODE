@@ -35,19 +35,16 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
     private val shootSeq = serial(
         execute {
             Intake.stop()
-            Shooter.setRPM(2900.0)
-            Hood.setPosition(0.68)
+            Shooter.setRPM(3925.0)
+            Hood.setPosition(0.5)
             actionQueue.add(100) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(300) {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.7)
+                    Intake.setPowerSupport(0.6)
                     actionQueue.add(700)
                     {
-                        actionQueue.add(600) {
-                            Shooter.setRPM(0.0)
-                            Wicket.setPosition(Wicket.CLOSE_POSITION)
-                        }
+                        Wicket.setPosition(Wicket.CLOSE_POSITION)
                     }
 
                 }
@@ -57,20 +54,20 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
     )
 
     private val preCollectSeq = serial(
-        execute { Joint.setPosition(Joint.COLLECT_POSITION) },
+        execute{Joint.setPosition(Joint.COLLECT_POSITION)},
         execute { Intake.setPowerMain(1.0) },
         execute { Intake.setPowerSupport(1.0) },
     )
 
     private val afterCollectSeq = serial(
         execute {
-            Intake.setPowerMain(1.0)
-            Joint.setPosition(Joint.INIT_POSITION)
+            Intake.setPowerMain(0.3)
+            Intake.setPowerSupport(0.1)
         }
     )
     private val charge = serial(
         execute{
-            Shooter.setRPM(2900.0)
+            Shooter.setRPM(3900.0)
         }
     )
 
@@ -81,64 +78,96 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
             execute { Wicket.setPosition(Wicket.CLOSE_POSITION) }, // preload -1
             charge,
             execute { Turret.setPosition(0.645) },
-
             execute { goTo(54.0, 16.0, 90.0) },
-            sleepms(1200),
-            shootSeq,
-            sleepms(2200),
-
-            // first spike mark -2
-            execute { goTo(39.0, 34.0, 180.0) },
             sleepms(600),
-            preCollectSeq,
+            shootSeq,
 
+            sleepms(700),
+            execute { goTo(48.0, 34.0, 180.0) },//first spike mark -2
+            sleepms(700),
+            preCollectSeq,
             execute { goTo(14.0, 34.0, 180.0) }, // collected
-            sleepms(1200),
-            afterCollectSeq,
-            charge,
-
-            // shooting position
-            execute { goTo(54.0, 16.0, 90.0) },
-            sleepms(2500),
-            shootSeq,
-            sleepms(2200),
-
-            // human player -3
-            preCollectSeq,
-            execute { goTo(1.0, 8.0, 180.0) },
-            sleepms(2000),
-            execute { goTo(20.0, 8.0, 180.0) },
             sleepms(1000),
-            execute { goTo(1.0, 8.0, 180.0) },
-            sleepms(1800),
-            charge,
-
-            execute { goTo(54.0, 16.0, 90.0) },
-            sleepms(700),
+            execute{Turret.setPosition(0.09)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(500),
             afterCollectSeq,
-            execute { Joint.setPosition(Joint.INIT_POSITION + 0.1) },
-            sleepms(1900),
+            sleepms(1000),
             shootSeq,
 
-            sleepms(2000),
-            // human player -4
-            execute { goTo(4.0, 8.0, 150.0) },
-            preCollectSeq,
-            sleepms(400),
-            execute { goTo(5.0, 9.0, 110.0) },
             sleepms(800),
-            execute { goTo(5.0, 40.0, 110.0) },
-            sleepms(2500),
-            charge,
-            // shooting position
-            execute { goTo(54.0, 16.0, 90.0) },
-            sleepms(700),
-            execute { Joint.setPosition(Joint.INIT_POSITION + 0.1) },
-            sleepms(1900),
+            preCollectSeq,
+            execute { goTo(1.0, 8.0, 180.0) },//human -3
+            sleepms(1200),
+            execute { goTo(20.0, 8.0, 180.0) },
+            sleepms(300),
+            execute { goTo(1.0, 8.0, 180.0) },
+            sleepms(400),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(600),
+            afterCollectSeq,
+            sleepms(600),
             shootSeq,
-            sleepms(2200),
-            execute { goTo(54.0, 30.0, 90.0) },
-            sleepms(999999999)
+
+            sleepms(800),
+            preCollectSeq,
+            execute { goTo(1.0, 8.0, 180.0) },//human -4
+            sleepms(1600),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(600),
+            afterCollectSeq,
+            sleepms(600),
+            shootSeq,
+
+            sleepms(800),
+            preCollectSeq,
+            execute { goTo(1.0, 8.0, 180.0) },//human -5
+            sleepms(1600),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(600),
+            afterCollectSeq,
+            sleepms(600),
+            shootSeq,
+
+            sleepms(800),
+            preCollectSeq,
+            execute { goTo(1.0, 8.0, 180.0) },//human -6
+            sleepms(1600),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(600),
+            afterCollectSeq,
+            sleepms(600),
+            shootSeq,
+
+            sleepms(800),
+            preCollectSeq,
+            execute { goTo(1.0, 8.0, 180.0) },//human -7
+            sleepms(1600),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(600),
+            afterCollectSeq,
+            sleepms(600),
+            shootSeq,
+
+            sleepms(800),
+            preCollectSeq,
+            execute { goTo(1.0, 8.0, 180.0) },//human -8
+            sleepms(1600),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute { goTo(54.0, 16.0, 180.0) },
+            sleepms(600),
+            afterCollectSeq,
+            sleepms(600),
+            shootSeq,
+
+            sleepms(1400),
+            execute{Shooter.setRPM(0.0)}
+
         )
     }
 }

@@ -16,6 +16,8 @@ import org.firstinspires.ftc.teamcode.pinpoint.Pinpoint
 import org.firstinspires.ftc.teamcode.subsystems.Controller
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.subsystems.Hood
+import org.firstinspires.ftc.teamcode.subsystems.Intake
+import org.firstinspires.ftc.teamcode.subsystems.Joint
 import org.firstinspires.ftc.teamcode.subsystems.Shooter
 import org.firstinspires.ftc.teamcode.subsystems.Turret
 import org.firstinspires.ftc.teamcode.tasks.Task
@@ -94,8 +96,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         deg = Hood.calculate(distance)
         if(!far)
             Hood.setPosition(deg)
-        else
-            Hood.setPosition(Hood.HIGHER_LIMIT)
+            //Hood.setPosition(Hood.HIGHER_LIMIT)
         follower.update()
         log.add("@X", follower.pose.x)
         log.add("@Y", follower.pose.y)
@@ -169,4 +170,6 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
                 Turret.setPosition(Turret.FORWARD_POSITION)
         }
     }
+
+
 }

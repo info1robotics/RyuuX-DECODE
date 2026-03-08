@@ -12,6 +12,9 @@ object Pinpoint {
     const val BLUE_GOAL_Y = 128.0//144
     const val cm = 2.54
     const val offset = 0.0//TODO change incase smth
+    var comp =0.0
+    var converterNegative =-500.0
+    var converterPositiv = 1000.0
 
     fun init(hardwareMap: HardwareMap) {}
 
@@ -27,9 +30,5 @@ object Pinpoint {
             (goalX - currentX).pow(2) +
                     (goalY - currentY).pow(2)
         )- offset
-    }
-    fun delay(distance:Double)
-    {
-
     }
 }

@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.hardware.PwmControl.PwmRange
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.ServoImplEx
 
-object Joint {
+object  Joint {
 
-    var COLLECT_POSITION = 0.55
-    var INIT_POSITION = 0.32
+    var COLLECT_POSITION = 0.48
+    var INIT_POSITION = 0.28
 
     private lateinit var servoJointLeft: ServoImplEx
     private lateinit var servoJointRight: ServoImplEx

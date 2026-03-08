@@ -107,6 +107,10 @@ object Drivetrain {
 
         setDriveMotorPower(leftFrontPower, rightFrontPower, leftBackPower, rightBackPower)
     }
+    fun getAveragePower(): Double {
+        return (fl.power+fr.power+bl.power+br.power)/4
+    }
+
 
     fun stop() {
         setDriveMotorPower(0.0, 0.0, 0.0, 0.0)
