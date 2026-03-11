@@ -85,7 +85,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             execute{ goTo(90.0,62.7,0.0)},//pre collect -2  open gate at y 61.2
             preCollectSeq,
             sleepms(1000),
-            execute{Turret.setPosition(0.778)},
+            execute{Turret.setPosition(0.80)},
             execute{ goTo(118.0,62.7,0.0)},//collectopen gate at x=119 y=61.2
             sleepms(800),
             afterCollectSeq,
@@ -100,9 +100,9 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
 
 
             sleepms(600),
-            execute{ goTo(103.0,65.5,0.0)},//
+            execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1200),
-            execute{ goTo(120.7,65.5,0.0)},//collect -3
+            execute{ goTo(120.7,66.5,0.0)},//collect -3
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
             sleepms(680),
             preCollectSeq,
@@ -113,13 +113,13 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             sleepms(300),
             reverse,
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(800),
+            sleepms(900),
             shootSeq,
 
             sleepms(600),
-            execute{ goTo(103.0,65.5,0.0)},//
+            execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1300),
-            execute{ goTo(120.7,65.5,0.0)},//collect -4
+            execute{ goTo(120.7,66.5,0.0)},//collect -4
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
             sleepms(680),
             preCollectSeq,
@@ -130,14 +130,14 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             sleepms(200),
             reverse,
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(1000),
+            sleepms(1100),
             shootSeq,
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },//spike mark
             execute{ goTo(98.0,82.0,0.0)} ,//pre collect -5
             preCollectSeq,
-            sleepms(300),
+            sleepms(200),
             execute{ goTo(119.0,82.0,0.0)},//collect
             sleepms(650),
             afterCollectSeq,
@@ -145,14 +145,14 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(900),
+            sleepms(800),
             shootSeq,
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,65.5,0.0)},//
+            execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1200),
-            execute{ goTo(120.7,65.5,0.0)},//collect -6
+            execute{ goTo(120.7,66.5,0.0)},//collect -6
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
             sleepms(680),
             preCollectSeq,
@@ -163,7 +163,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             sleepms(200),
             reverse,
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(1000),
+            sleepms(1100),
             shootSeq,
 
 

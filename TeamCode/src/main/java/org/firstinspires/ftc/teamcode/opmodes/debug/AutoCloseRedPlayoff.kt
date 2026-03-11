@@ -39,7 +39,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
                 {
                     Shooter.setRPM(power)
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.9)
+                    Intake.setPowerSupport(1.0)
                     actionQueue.add(600)
                     {
                         Shooter.setRPM(0.0)
@@ -79,12 +79,12 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             execute{ goTo(90.0,62.7,0.0)},//pre collect -2  open gate at y 61.2
             preCollectSeq,
             sleepms(1000),
-            execute{Turret.setPosition(0.778)},
+            execute{Turret.setPosition(0.8)},
             execute{ goTo(118.0,62.7,0.0)},//collectopen gate at x=119 y=61.2
             sleepms(800),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},
-            execute{Shooter.charge()},
+            execute{Shooter.charge(power)},
             sleepms(300),
             execute{ goTo(85.0,83.0,0.0)},//shoot
             sleepms(300),
@@ -94,15 +94,15 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
 
 
             sleepms(600),
-            execute{ goTo(103.0,65.5,0.0)},//
+            execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1200),
-            execute{ goTo(120.7,65.5,0.0)},//collect -3
+            execute{ goTo(120.7,66.5,0.0)},//collect -3
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
             sleepms(680),
             preCollectSeq,
             execute{ goTo(124.5,56.5,30.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge()},
+            execute{Shooter.charge(power)},
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
@@ -110,15 +110,15 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             shootSeq,
 
             sleepms(600),
-            execute{ goTo(103.0,65.5,0.0)},//
+            execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1300),
-            execute{ goTo(120.7,65.5,0.0)},//collect -4
+            execute{ goTo(120.7,66.5,0.0)},//collect -4
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
             sleepms(680),
             preCollectSeq,
             execute{ goTo(125.5,56.5,30.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge()},
+            execute{Shooter.charge(power)},
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
@@ -133,7 +133,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             execute{ goTo(119.0,82.0,0.0)},//collect
             sleepms(650),
             afterCollectSeq,
-            execute{Shooter.charge()},
+            execute{Shooter.charge(power)},
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
@@ -142,7 +142,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,65.5,0.0)},//
+            execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1200),
             execute{ goTo(120.7,65.5,0.0)},//collect -6
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
@@ -150,7 +150,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             preCollectSeq,
             execute{ goTo(125.5,56.5,30.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge()},
+            execute{Shooter.charge(power)},
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
@@ -167,7 +167,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             preCollectSeq,
             execute{ goTo(125.5,56.5,30.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge()},
+            execute{Shooter.charge(power)},
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},

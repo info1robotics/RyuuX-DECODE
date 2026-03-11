@@ -73,7 +73,7 @@ class TeleopSolo : LinearOpMode() {
                 gamepad1.rumbleBlips(1)
             }
 
-            if(gamepad1.right_bumper)
+            if(gamepad1.a)
             {
                 Intake.setPowerMain(1.0)
                 if(Intake.isFull())
@@ -88,7 +88,7 @@ class TeleopSolo : LinearOpMode() {
                 Intake.stop()
             }
 
-            if(gamepad1.right_bumper)
+            if(gamepad1.a)
                 Joint.setPosition(Joint.COLLECT_POSITION)
             else
                 Joint.setPosition(Joint.INIT_POSITION)
@@ -111,7 +111,7 @@ class TeleopSolo : LinearOpMode() {
 
             far = false
             Hood.setPosition(Hood.calculate(distance))
-            if(gamepadEx1.getButtonDown("a") && available)
+            if(gamepadEx1.getButtonDown("bumper_right") && available)
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
@@ -119,6 +119,7 @@ class TeleopSolo : LinearOpMode() {
                 actionQueue.add(delay)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
+
                     Intake.setPowerSupport(1.0)
                     actionQueue.add(700)
                     {
@@ -130,7 +131,7 @@ class TeleopSolo : LinearOpMode() {
                     }
                 }
             }
-            if(gamepadEx1.getButtonDown("b") && available)
+            if(gamepadEx1.getButtonDown("bumper_left") && available)
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
@@ -138,7 +139,7 @@ class TeleopSolo : LinearOpMode() {
                 actionQueue.add(300)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(1.0)
+                    Intake.setPowerSupport(0.9)
                     actionQueue.add(700)
                     {
                         Intake.stop()

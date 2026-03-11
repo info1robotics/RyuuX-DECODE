@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Autonomous
 class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.BLUE) {
-
+    var offset =0.0//TODO tune, this is local doesn t affect other classes
     fun turnTo(degrees: Double) {
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
         follower.holdPoint(temp)
@@ -31,13 +31,13 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
     private val shootSeq = serial(
         execute{
             Intake.stop()
-            Shooter.setRPM(power)
+            Shooter.setRPM(power+offset)
             actionQueue.add(100)
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(300)
                 {
-                    Shooter.setRPM(power)
+                    Shooter.setRPM(power+offset)
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(0.9)
                     actionQueue.add(600)
@@ -81,89 +81,94 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             execute { goTo(56.0, 93.0, 138.0) }, // preload-1 (144-88)
             execute { Shooter.charge() },
             execute { Intake.setPowerMain(0.8) },
-            sleepms(800),
+            sleepms(900),
             shootSeq,
             sleepms(600),
 
             execute { goTo(45.0, 61.2, 180.0) }, // pre collect -2
             preCollectSeq,
-            sleepms(1000),
+            sleepms(900),
             execute{Turret.setPosition(0.2)},
-            execute { goTo(23.0, 61.2, 180.0) }, // collect
-            sleepms(500),
+            execute { goTo(20.0, 61.2, 180.0) }, // collect
+            sleepms(600),
             afterCollectSeq,
             execute { Shooter.charge() },
             sleepms(200),
             execute { goTo(55.0, 83.0, 180.0) },
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(700),
+            sleepms(800),
             shootSeq,//TODO
 
             sleepms(600),
             execute { goTo(40.4, 67.0, 180.0) }, // collect -3
             sleepms(1200),
-            execute { goTo(16.7, 67.0, 180.0) },
+            execute { goTo(14.7, 67.0, 180.0) },
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(600),
+            sleepms(800),
             preCollectSeq,
-            execute { goTo(13.5, 58.3, 150.0) }, // push gate
-            sleepms(1100),
+            execute { goTo(8.5, 57.0, 130.0) }, // push gate
+            sleepms(1100),//wait gate
             execute { Shooter.charge() },
             execute { goTo(55.0, 83.0, 180.0) },
             sleepms(300),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.1) },
+            sleepms(600),
             reverse,
-            sleepms(1200),
+            sleepms(650),
             shootSeq,
 
 
             sleepms(600),
             execute { goTo(40.4, 67.0, 180.0) }, // collect -4
-            sleepms(1200),
-            execute { goTo(16.7, 67.0, 180.0) },
+            sleepms(1300),
+            execute { goTo(14.7, 67.0, 180.0) },
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(600),
+            sleepms(800),
             preCollectSeq,
-            execute { goTo(13.5, 58.5, 150.0) }, // push gate
-            sleepms(1100),
+            execute { goTo(8.5, 57.0, 130.0) }, // push gate
+            sleepms(1100),//wait gate
             execute { Shooter.charge() },
             execute { goTo(55.0, 83.0, 180.0) },
-            sleepms(300),
-            reverse,
+            sleepms(200),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.1) },
-            sleepms(1200),
+            sleepms(500),
+            reverse,
+            sleepms(650),
             shootSeq,
 
             sleepms(600),
             execute { Joint.setPosition(Joint.COLLECT_POSITION) },
             execute { goTo(46.0, 82.6, 180.0) }, // pre collect -5
             preCollectSeq,
+            sleepms(100),
+            execute { goTo(21.0, 82.6, 180.0) }, // collect spike mark
             sleepms(500),
-            execute { goTo(25.0, 82.6, 180.0) }, // collect spike mark
-            sleepms(750),
             afterCollectSeq,
             execute { Shooter.charge() },
-            execute { goTo(59.0, 83.0, 180.0) },
-            sleepms(700),
+            execute { goTo(55.0, 83.0, 180.0) },
+            sleepms(300),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
+            sleepms(500),
             shootSeq,
 
 
             sleepms(600),
             execute { goTo(40.4, 67.0, 180.0) }, // collect -6
             sleepms(1200),
-            execute { goTo(16.7, 67.0, 180.0) },
+            execute { goTo(14.7, 67.0, 180.0) },
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(600),
+            sleepms(800),
             preCollectSeq,
-            execute { goTo(13.5, 58.5, 150.0) }, // push gate
-            sleepms(1100),
+            execute { goTo(8.5, 58.5, 130.0) }, // push gate
+            sleepms(1100),//wait at agte
             execute { Shooter.charge() },
             execute { goTo(55.0, 83.0, 180.0) },
-            sleepms(300),
+            sleepms(200),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.1) },
+            sleepms(600),
             reverse,
-            sleepms(1200),
+            sleepms(650),
             shootSeq,
 
 
@@ -171,7 +176,7 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             execute { goTo(44.0, 36.5, 180.0) }, // last spike mark -7
             preCollectSeq,
             sleepms(1300),
-            execute { goTo(20.0, 36.5, 180.0) },//collected
+            execute { goTo(18.0, 36.5, 180.0) },//collected
             sleepms(700),
             execute { goTo(55.0, 83.0, 180.0) },
             sleepms(200),
@@ -182,7 +187,7 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             sleepms(700),
             shootSeq,
             sleepms(600),
-            execute { goTo(40.0, 83.0, 180.0) },
+            execute { goTo(36.0, 83.0, 180.0) },
 
             sleepms(999999999)
         )
