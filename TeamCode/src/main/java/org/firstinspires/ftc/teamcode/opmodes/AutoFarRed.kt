@@ -139,7 +139,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             preCollectSeq,
             execute { goTo(129.0, 37.0, 0.0) },//collected
             sleepms(1000),
-            execute{Turret.setPosition(0.917)},//idk
+            execute{Turret.setPosition(0.917)},//
             charge,
             execute{goTo(90.0,12.0,0.0)},//shooting position
             sleepms(500),
