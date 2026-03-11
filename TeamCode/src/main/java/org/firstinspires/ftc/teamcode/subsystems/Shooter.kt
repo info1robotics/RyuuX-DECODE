@@ -19,8 +19,8 @@ object Shooter {
     const val MAX_RPM = 3600.0//
     const val MAX_VELOCITY = 1700.0//overshoots
     const val FAR_POWER=1400
-    const val SUPER_CYCLE_POWER = 3175.0
-    val offset = 105.0// offset the function for more power
+    const val SUPER_CYCLE_POWER = 3075.0
+    val offset = 60.0// TODO tune, general use affects all opmode, mainly teleop, can be changed locally on other classes
 
 
     private val BASE_PIDF = PIDFCoefficients(190.0, 0.0, 0.0, 14.9) // Base feedforward at 12V
@@ -129,7 +129,7 @@ object Shooter {
     }
     fun charge()
     {
-        setRPM(3000.0 + offset)
+        setRPM(2800.0)
     }
 
 }

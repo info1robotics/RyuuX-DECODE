@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.common.AutoConstants
 import org.firstinspires.ftc.teamcode.common.GamepadEx
 import org.firstinspires.ftc.teamcode.common.Log
 import org.firstinspires.ftc.teamcode.enums.Colours
+import org.firstinspires.ftc.teamcode.opmodes.debug.ShooterTesting
 import org.firstinspires.ftc.teamcode.pedro.Constants
 import org.firstinspires.ftc.teamcode.pinpoint.Pinpoint
 import org.firstinspires.ftc.teamcode.subsystems.Controller
@@ -49,7 +50,6 @@ class Teleop : LinearOpMode() {
     var forwardPower =0.0
     var strafePower = 0.0
     var primaryRotationPower = 0.0
-    var secondaryRotationPower = 0.0
     var delay = 0L
     var rawHeading = 0.0
     var correctedHeading = 0.0
@@ -59,18 +59,7 @@ class Teleop : LinearOpMode() {
         forwardPower = gamepad1.corrected_left_stick_y().toDouble()
         strafePower =  gamepad1.left_stick_x.toDouble()
         primaryRotationPower = (gamepad1.right_trigger.toDouble() - gamepad1.left_trigger.toDouble())
-
-        secondaryRotationPower = if(gamepad1.right_bumper)
-            0.2
-        else if(gamepad1.left_bumper)
-            -0.2
-        else
-            0.0
-
-        if(primaryRotationPower==0.0)
-            Drivetrain.driveMecanum(forwardPower, strafePower, secondaryRotationPower, 1.0)
-        else
-            Drivetrain.driveMecanum(forwardPower, strafePower, primaryRotationPower, 1.0)
+        Drivetrain.driveMecanum(forwardPower, strafePower, primaryRotationPower, 1.0)
     }
     private fun handleInputIntake()
     {
@@ -96,7 +85,7 @@ class Teleop : LinearOpMode() {
                 else if(!Intake.isEmptyTop())
                     Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(0.3))
                 else
-                    Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(1.0))
+                    Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(0.9))
             }
 
             if(gamepad2.right_bumper)
@@ -118,7 +107,13 @@ class Teleop : LinearOpMode() {
     var power = 0.0
     private fun handleInputShooter() {
         if(((Intake.isUpper() && distance<230) || gamepadEx1.getButtonDown("x")) && !transition )
-            Shooter.charge(power)
+        {
+            if(distance>190)
+                Shooter.setRPM(power+125)
+            else
+                Shooter.setRPM(power)
+
+        }
         if(distance<max)
         {
 
@@ -132,7 +127,7 @@ class Teleop : LinearOpMode() {
                 actionQueue.add(delay)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(1.0)
+                    Intake.setPowerSupport(0.9)
                     actionQueue.add(700)
                     {
                         Intake.stop()
@@ -151,7 +146,7 @@ class Teleop : LinearOpMode() {
                 actionQueue.add(300)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(1.0)
+                    Intake.setPowerSupport(0.9)
                     actionQueue.add(700)
                     {
                         Intake.stop()

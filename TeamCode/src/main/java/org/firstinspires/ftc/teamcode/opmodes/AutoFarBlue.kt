@@ -35,7 +35,47 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
     private val shootSeq = serial(
         execute {
             Intake.stop()
-            Shooter.setRPM(3925.0)
+            Shooter.setRPM(4000.0)
+            Hood.setPosition(0.5)
+            actionQueue.add(100) {
+                Wicket.setPosition(Wicket.OPEN_POSITION)
+                actionQueue.add(300) {
+                    Intake.setPowerMain(1.0)
+                    Intake.setPowerSupport(0.6)
+                    actionQueue.add(700)
+                    {
+                        Wicket.setPosition(Wicket.CLOSE_POSITION)
+                    }
+
+                }
+
+            }
+        }
+    )
+    private val shootPreload = serial(
+        execute {
+            Intake.stop()
+            Shooter.setRPM(3975.0)
+            Hood.setPosition(0.5)
+            actionQueue.add(100) {
+                Wicket.setPosition(Wicket.OPEN_POSITION)
+                actionQueue.add(300) {
+                    Intake.setPowerMain(1.0)
+                    Intake.setPowerSupport(0.6)
+                    actionQueue.add(700)
+                    {
+                        Wicket.setPosition(Wicket.CLOSE_POSITION)
+                    }
+
+                }
+
+            }
+        }
+    )
+    private val shootSeqPow = serial(
+        execute {
+            Intake.stop()
+            Shooter.setRPM(4075.0)
             Hood.setPosition(0.5)
             actionQueue.add(100) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
@@ -67,7 +107,12 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
     )
     private val charge = serial(
         execute{
-            Shooter.setRPM(3900.0)
+            Shooter.setRPM(4000.0)
+        }
+    )
+    private val chargePreload = serial(
+        execute{
+            Shooter.setRPM(3975.0)
         }
     )
 
@@ -76,11 +121,11 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
         far=true
         task = serial(
             execute { Wicket.setPosition(Wicket.CLOSE_POSITION) }, // preload -1
-            charge,
+            chargePreload,
             execute { Turret.setPosition(0.645) },
             execute { goTo(54.0, 16.0, 90.0) },
             sleepms(600),
-            shootSeq,
+            shootPreload,
 
             sleepms(700),
             execute { goTo(48.0, 34.0, 180.0) },//first spike mark -2
@@ -89,6 +134,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
             execute { goTo(14.0, 34.0, 180.0) }, // collected
             sleepms(1000),
             execute{Turret.setPosition(0.09)},
+            charge,
             execute { goTo(54.0, 16.0, 180.0) },
             sleepms(500),
             afterCollectSeq,
