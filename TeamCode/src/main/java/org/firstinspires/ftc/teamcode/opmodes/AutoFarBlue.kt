@@ -55,7 +55,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
     private val shootPreload = serial(
         execute {
             Intake.stop()
-            Shooter.setRPM(3975.0)
+            Shooter.setRPM(3930.0)
             Hood.setPosition(0.5)
             actionQueue.add(100) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
@@ -112,7 +112,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
     )
     private val chargePreload = serial(
         execute{
-            Shooter.setRPM(3975.0)
+            Shooter.setRPM(3930.0)
         }
     )
 
@@ -122,7 +122,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
         task = serial(
             execute { Wicket.setPosition(Wicket.CLOSE_POSITION) }, // preload -1
             chargePreload,
-            execute { Turret.setPosition(0.645) },
+            execute { Turret.setPosition(0.63) },
             execute { goTo(54.0, 16.0, 90.0) },
             sleepms(600),
             shootPreload,

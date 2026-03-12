@@ -237,7 +237,7 @@ class Teleop : LinearOpMode() {
                 allianceColour = Colours.RED
                 //Limelight.allianceTag = AprilTags.RED
                 follower.pose = Pose(//TODO change to autopos
-                    98.0,
+                    90.0,
                     83.0,
                     Math.toRadians(0.0)
                 )
@@ -247,9 +247,9 @@ class Teleop : LinearOpMode() {
                 allianceColour = Colours.BLUE//TODO change to autopos
                 //Limelight.allianceTag = AprilTags.BLUE
                 follower.pose = Pose(
-                    56.0,
-                    79.0,
-                    Math.toRadians(160.0)
+                    41.0,
+                    83.0,
+                    Math.toRadians(178.0)
                 )
                 wasSelected = true
             }

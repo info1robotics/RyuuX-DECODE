@@ -127,7 +127,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
         task = serial(
             execute{Wicket.setPosition(Wicket.CLOSE_POSITION)},//preload -1
             chargePreload,
-            execute{Turret.setPosition(0.37)},
+            execute{Turret.setPosition(0.375)},
             execute{goTo(90.0,16.0,90.0)},
             sleepms(700),
             shootPreload,
@@ -211,6 +211,6 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             shootSeq,
 
 
-        )
+            )
     }
 }

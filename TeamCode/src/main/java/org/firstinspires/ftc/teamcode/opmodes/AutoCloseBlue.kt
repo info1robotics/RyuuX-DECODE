@@ -13,7 +13,8 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Autonomous
 class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.BLUE) {
-    var offset =0.0//TODO tune, this is local doesn t affect other classes
+    var offset =15.0//TODO tune, this is local doesn t affect other classes
+
     fun turnTo(degrees: Double) {
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
         follower.holdPoint(temp)
@@ -85,11 +86,11 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             shootSeq,
             sleepms(600),
 
-            execute { goTo(45.0, 61.2, 180.0) }, // pre collect -2
+            execute { goTo(45.0, 62.2, 180.0) }, // pre collect -2
             preCollectSeq,
             sleepms(900),
-            execute{Turret.setPosition(0.2)},
-            execute { goTo(20.0, 61.2, 180.0) }, // collect
+            execute{Turret.setPosition(0.184)},
+            execute { goTo(20.0, 62.2, 180.0) }, // collect
             sleepms(600),
             afterCollectSeq,
             execute { Shooter.charge() },
@@ -100,10 +101,10 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             sleepms(800),
             shootSeq,//TODO
 
-            sleepms(600),
-            execute { goTo(40.4, 67.0, 180.0) }, // collect -3
+            sleepms(550),
+            execute { goTo(40.4, 67.8, 180.0) }, // collect -3
             sleepms(1200),
-            execute { goTo(14.7, 67.0, 180.0) },
+            execute { goTo(14.7, 67.8, 180.0) },
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
             sleepms(800),
             preCollectSeq,
@@ -114,12 +115,13 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             sleepms(300),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.1) },
             sleepms(600),
+            afterCollectSeq,
             reverse,
             sleepms(650),
             shootSeq,
 
 
-            sleepms(600),
+            sleepms(550),
             execute { goTo(40.4, 67.0, 180.0) }, // collect -4
             sleepms(1300),
             execute { goTo(14.7, 67.0, 180.0) },
@@ -134,10 +136,11 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.1) },
             sleepms(500),
             reverse,
+            afterCollectSeq,
             sleepms(650),
             shootSeq,
 
-            sleepms(600),
+            sleepms(550),
             execute { Joint.setPosition(Joint.COLLECT_POSITION) },
             execute { goTo(46.0, 82.6, 180.0) }, // pre collect -5
             preCollectSeq,
@@ -153,7 +156,7 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             shootSeq,
 
 
-            sleepms(600),
+            sleepms(550),
             execute { goTo(40.4, 67.0, 180.0) }, // collect -6
             sleepms(1200),
             execute { goTo(14.7, 67.0, 180.0) },
@@ -167,12 +170,13 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             sleepms(200),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.1) },
             sleepms(600),
+            afterCollectSeq,
             reverse,
             sleepms(650),
             shootSeq,
 
 
-            sleepms(600),
+            sleepms(550),
             execute { goTo(44.0, 36.5, 180.0) }, // last spike mark -7
             preCollectSeq,
             sleepms(1300),
@@ -186,8 +190,8 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             execute{Shooter.charge()},
             sleepms(700),
             shootSeq,
-            sleepms(600),
-            execute { goTo(36.0, 83.0, 180.0) },
+            sleepms(550),
+            execute { goTo(41.0, 83.0, 178.0) },
 
             sleepms(999999999)
         )
