@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes
 
 import com.pedropathing.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.enums.Colours
 import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.subsystems.Joint
@@ -174,23 +175,27 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             shootSeq,
 
 
-            sleepms(600),
-            execute { goTo(95.0, 37.5, 0.0) }, // last spike mark -7
+            sleepms(550),
+            execute{ goTo(103.0,66.5,0.0)},//
+            sleepms(1200),
+            execute{ goTo(120.0,66.5,0.0)},//collect -7
+            execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
+            sleepms(680),
             preCollectSeq,
-            sleepms(1300),
-            execute { goTo(122.0, 37.5, 0.0) },//collected
-            sleepms(700),
+            execute{ goTo(124.0,56.5,45.0)},//push gate
+            sleepms(900),//wait at gate
+            execute{Shooter.charge()},
             execute{ goTo(85.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(700),
+            sleepms(500),
             afterCollectSeq,
-            execute{Shooter.charge()},
-            sleepms(700),
+            reverse,
+            sleepms(550),
             shootSeq,
 
             sleepms(600),
-            execute{ goTo(90.0,83.0,0.0)},
+            execute{ goTo(91.0,83.0,0.0)},
 
 
             sleepms(999999999),

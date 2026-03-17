@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode.opmodes.debug
+package org.firstinspires.ftc.teamcode.opmodes
 
 import com.pedropathing.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.enums.Colours
-import org.firstinspires.ftc.teamcode.opmodes.AutoBase
 import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.subsystems.Joint
 import org.firstinspires.ftc.teamcode.subsystems.Shooter
@@ -16,10 +15,11 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Autonomous
 @Disabled
 class AutoCloseRedPlayoff : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {//32 cm from tile intersection
-fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
-    val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
-    follower.holdPoint(temp)
-}
+var offset =15.0//TODO tune, this is local doesn t affect other classes
+    fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
+        val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
+        follower.holdPoint(temp)
+    }
 
     fun goTo(x: Double, y: Double, degrees: Double) {
         val temp = Pose(x, y, Math.toRadians(degrees))
@@ -39,7 +39,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
                 {
                     Shooter.setRPM(power)
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(1.0)
+                    Intake.setPowerSupport(0.9)
                     actionQueue.add(600)
                     {
                         Shooter.setRPM(0.0)
@@ -63,6 +63,15 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             Intake.setPowerSupport(0.2)
         }
     )
+    private val reverse = serial(
+        execute{
+            Intake.setPowerSupport(-0.5)
+            actionQueue.add(200)
+            {
+                Intake.setPowerSupport(0.0)
+            }
+        }
+    )
 
     override fun onInit(){
         super.onInit()
@@ -76,17 +85,19 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             shootSeq,
             sleepms(600),
 
-            execute{ goTo(90.0,62.7,0.0)},//pre collect -2  open gate at y 61.2
+            execute{ goTo(90.0,63.3,0.0)},//pre collect -2  open gate at y 61.2
             preCollectSeq,
             sleepms(1000),
-            execute{Turret.setPosition(0.8)},
-            execute{ goTo(118.0,62.7,0.0)},//collectopen gate at x=119 y=61.2
+            execute{Turret.setPosition(0.78)},
+            execute{ goTo(110.0,63.3,0.0)},//
             sleepms(800),
+            execute{ goTo(119.5,68.5,0.0)},//open gate homo
+            sleepms(300),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},
-            execute{Shooter.charge(power)},
+            execute{Shooter.charge()},
             sleepms(300),
-            execute{ goTo(85.0,83.0,0.0)},//shoot
+            execute{ goTo(82.0,83.0,0.0)},//shoot
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(900),
@@ -96,86 +107,85 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             sleepms(600),
             execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1200),
-            execute{ goTo(120.7,66.5,0.0)},//collect -3
+            execute{ goTo(121.5,66.5,0.0)},//collect -3
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
+            sleepms(900),//hold gate open
             preCollectSeq,
-            execute{ goTo(124.5,56.5,30.0)},//push gate
+            execute{ goTo(124.0,52.5,45.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge(power)},
-            execute{ goTo(85.0,83.0,0.0)},
-            sleepms(300),
+            execute{Shooter.charge()},
+            execute{ goTo(82.0,83.0,0.0)},
+            sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(800),
+            sleepms(500),
+            afterCollectSeq,
+            reverse,
+            sleepms(600),
             shootSeq,
 
             sleepms(600),
             execute{ goTo(103.0,66.5,0.0)},//
-            sleepms(1300),
-            execute{ goTo(120.7,66.5,0.0)},//collect -4
+            sleepms(800),
+            execute{ goTo(121.5,66.5,0.0)},//collect -4
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
+            sleepms(1500),
             preCollectSeq,
-            execute{ goTo(125.5,56.5,30.0)},//push gate
+            execute{ goTo(124.5,52.5,45.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge(power)},
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{Shooter.charge()},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(1000),
+            sleepms(500),
+            afterCollectSeq,
+            reverse,
+            sleepms(600),
             shootSeq,
 
             sleepms(600),
-            execute{ Joint.setPosition(Joint.COLLECT_POSITION) },//spike mark
+            execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
             execute{ goTo(98.0,82.0,0.0)} ,//pre collect -5
             preCollectSeq,
-            sleepms(300),
-            execute{ goTo(119.0,82.0,0.0)},//collect
+            sleepms(200),
+            execute{ goTo(119.0,82.0,0.0)},//collect spike
             sleepms(650),
             afterCollectSeq,
-            execute{Shooter.charge(power)},
-            execute{ goTo(85.0,83.0,0.0)},
+            sleepms(100),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
+            sleepms(400),
+            execute{ goTo(113.0,68.5,-30.0)},//push gate homo
+            sleepms(700),
+            execute{ goTo(120.0,68.5,0.0)},//push gate homo
+            sleepms(300),
+            execute{Shooter.charge()},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(900),
+            sleepms(1100),
             shootSeq,
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
             execute{ goTo(103.0,66.5,0.0)},//
             sleepms(1200),
-            execute{ goTo(120.7,65.5,0.0)},//collect -6
+            execute{ goTo(121.0,66.5,0.0)},//collect -6
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
+            sleepms(1400),// hold gate open
             preCollectSeq,
-            execute{ goTo(125.5,56.5,30.0)},//push gate
+            execute{ goTo(124.5,52.5,45.0)},//push gate
             sleepms(1100),//wait at gate
-            execute{Shooter.charge(power)},
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{Shooter.charge()},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(1000),
-            shootSeq,
-
-
+            sleepms(500),
+            afterCollectSeq,
+            reverse,
             sleepms(600),
-            execute{ goTo(103.0,65.5,0.0)},//
-            sleepms(1300),
-            execute{ goTo(120.7,65.5,0.0)},//collect -7
-            execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
-            preCollectSeq,
-            execute{ goTo(125.5,56.5,30.0)},//push gate
-            sleepms(1100),//wait at gate
-            execute{Shooter.charge(power)},
-            execute{ goTo(85.0,83.0,0.0)},
-            sleepms(200),
-            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(1000),
             shootSeq,
 
             sleepms(600),
-            execute{ goTo(98.0,83.0,0.0)},
+            execute{ goTo(91.0,83.0,0.0)},
 
 
             sleepms(999999999),

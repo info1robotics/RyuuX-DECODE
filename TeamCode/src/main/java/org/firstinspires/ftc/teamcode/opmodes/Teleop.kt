@@ -28,7 +28,6 @@ import kotlin.math.absoluteValue
 
 @TeleOp(name = "@Teleop")
 class Teleop : LinearOpMode() {
-
     fun Gamepad.corrected_left_stick_y(): Float = -this.left_stick_y
 
     private var startPose: Pose = AutoConstants.CENTER_POS
@@ -46,6 +45,8 @@ class Teleop : LinearOpMode() {
     private var distance = 0.0
     private var max = 205
     var available = false
+    var angleOffset = 0.0
+    var rpmOffset = 0.0
 
     var forwardPower =0.0
     var strafePower = 0.0
@@ -157,8 +158,49 @@ class Teleop : LinearOpMode() {
                     }
                 }
             }
-
         }
+
+        if(gamepadEx1.getButtonDown("y") && available)
+        {
+            Wicket.setPosition(Wicket.OPEN_POSITION)
+            transition=true
+            Intake.setPowerMain(1.0)
+            Intake.setPowerSupport(0.5)
+            actionQueue.add(200)
+            {
+                Wicket.setPosition(Wicket.CLOSE_POSITION)
+                actionQueue.add(400)
+                {
+                    Wicket.setPosition(Wicket.OPEN_POSITION)
+                    actionQueue.add(200)
+                    {
+                        Wicket.setPosition(Wicket.CLOSE_POSITION)
+                        actionQueue.add(500)
+                        {
+                            Wicket.setPosition(Wicket.OPEN_POSITION)
+                            transition=true
+                            Intake.setPowerSupport(-0.4)
+                            actionQueue.add(300)//if this doesn t work 1200
+                            {
+                                Intake.setPowerMain(1.0)
+                                Intake.setPowerSupport(0.9)
+                                actionQueue.add(700)
+                                {
+                                    Intake.stop()
+                                    Shooter.setRPM(0.0)
+                                    Wicket.setPosition(Wicket.CLOSE_POSITION)
+                                    transition = false
+                                    empty = 1.0
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+
         else far  = true
         if(transition && distance<max)
             Shooter.setRPM(power)
@@ -237,7 +279,7 @@ class Teleop : LinearOpMode() {
                 allianceColour = Colours.RED
                 //Limelight.allianceTag = AprilTags.RED
                 follower.pose = Pose(//TODO change to autopos
-                    90.0,
+                    91.0,
                     83.0,
                     Math.toRadians(0.0)
                 )
@@ -247,7 +289,7 @@ class Teleop : LinearOpMode() {
                 allianceColour = Colours.BLUE//TODO change to autopos
                 //Limelight.allianceTag = AprilTags.BLUE
                 follower.pose = Pose(
-                    41.0,
+                    55.0,
                     83.0,
                     Math.toRadians(178.0)
                 )
