@@ -106,18 +106,22 @@ class Teleop : LinearOpMode() {
     }
     var far = false
     var power = 0.0
+    var supportConverter = 0.0
     private fun handleInputShooter() {
-        if(((Intake.isUpper() && distance<230) || gamepadEx1.getButtonDown("x")) && !transition )
+
+        if(distance < 250)
+            supportConverter = 0.9
+        else
+            supportConverter= 0.6
+
+        //charge state
+        if((Intake.isUpper() || gamepadEx1.getButtonDown("x")) && !transition && distance<225)
         {
-            if(distance>190)
-                Shooter.setRPM(power+125)
-            else
-                Shooter.setRPM(power)
+            Shooter.setRPM(power)// local offset
 
         }
-        if(distance<max)
+        if(distance<250 || distance>280)
         {
-
             far = false
             Hood.setPosition(Hood.calculate(distance))
             if(gamepadEx1.getButtonDown("a") && available)
@@ -128,7 +132,7 @@ class Teleop : LinearOpMode() {
                 actionQueue.add(delay)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.9)
+                    Intake.setPowerSupport(supportConverter)
                     actionQueue.add(700)
                     {
                         Intake.stop()
@@ -147,7 +151,7 @@ class Teleop : LinearOpMode() {
                 actionQueue.add(300)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.9)
+                    Intake.setPowerSupport(supportConverter)
                     actionQueue.add(700)
                     {
                         Intake.stop()
@@ -159,50 +163,8 @@ class Teleop : LinearOpMode() {
                 }
             }
         }
-
-        if(gamepadEx1.getButtonDown("y") && available)
-        {
-            Wicket.setPosition(Wicket.OPEN_POSITION)
-            transition=true
-            Intake.setPowerMain(1.0)
-            Intake.setPowerSupport(0.5)
-            actionQueue.add(200)
-            {
-                Wicket.setPosition(Wicket.CLOSE_POSITION)
-                actionQueue.add(400)
-                {
-                    Wicket.setPosition(Wicket.OPEN_POSITION)
-                    actionQueue.add(200)
-                    {
-                        Wicket.setPosition(Wicket.CLOSE_POSITION)
-                        actionQueue.add(500)
-                        {
-                            Wicket.setPosition(Wicket.OPEN_POSITION)
-                            transition=true
-                            Intake.setPowerSupport(-0.4)
-                            actionQueue.add(300)//if this doesn t work 1200
-                            {
-                                Intake.setPowerMain(1.0)
-                                Intake.setPowerSupport(0.9)
-                                actionQueue.add(700)
-                                {
-                                    Intake.stop()
-                                    Shooter.setRPM(0.0)
-                                    Wicket.setPosition(Wicket.CLOSE_POSITION)
-                                    transition = false
-                                    empty = 1.0
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-
         else far  = true
-        if(transition && distance<max)
+        if(transition && (distance<250 || distance>300))
             Shooter.setRPM(power)
 
     }
@@ -213,7 +175,7 @@ class Teleop : LinearOpMode() {
         if(gamepadEx2.getButtonDown("y") && !hold) hold=true
         else if(gamepadEx2.getButtonDown("y") && hold) hold=false
 
-        if(!hold && distance < 225)
+        if(!hold)
         {
 
             if(allianceColour==Colours.BLUE)
@@ -319,7 +281,7 @@ class Teleop : LinearOpMode() {
 
             delay = if(distance<=175) 0
             else if(distance <200) 300
-            else 600
+            else 500
 
             rawHeading = follower.pose.heading
             correctedHeading = if(rawHeading < 0)
@@ -340,6 +302,7 @@ class Teleop : LinearOpMode() {
             log.add("@Heading", Math.toDegrees(follower.pose.heading))
             log.add("distance from $allianceColour goal: $distancePP")
             log.add(("far "+(far).toString()))
+            log.add("power"+Shooter.getRPM())
             log.tick()
         }
     }

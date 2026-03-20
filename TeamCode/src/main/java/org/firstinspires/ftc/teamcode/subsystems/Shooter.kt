@@ -16,11 +16,11 @@ object Shooter {
     private lateinit var voltageSensor: VoltageSensor
 
     private const val MOTOR_TICKS_PER_REV = 28
-    const val MAX_RPM = 3600.0//
+    const val MAX_RPM = 4400.0//
     const val MAX_VELOCITY = 1700.0//overshoots
     const val FAR_POWER=1400
     const val SUPER_CYCLE_POWER = 3075.0
-    val offset = 60.0// TODO tune, general use affects all opmode, mainly teleop, can be changed locally on other classes
+    val offset = 100.0// TODO tune, general use affects all opmode, mainly teleop, can be changed locally on other classes
 
 
     private val BASE_PIDF = PIDFCoefficients(190.0, 0.0, 0.0, 14.9) // Base feedforward at 12V
@@ -116,9 +116,15 @@ object Shooter {
     }
 
     fun calculate(distance: Double): Double {
-        val value = 3845.331 +
-                (2519.676 - 3845.331) /
-                (1 + (distance / 187.4814).pow(3.621187)) + offset
+        var value =0.0
+        value = if(distance<=275) {
+            3864.831 +
+                    (2510.995 - 3864.831) /
+                    (1 + (distance / 189.8164).pow(3.407866)) + offset
+        } else {
+            4518.389 + (3726.74 - 4518.389)/(1 + (distance/349.4118).pow(12.73016)) + offset
+        }
+
 
         return MathFunctions.clamp(value, 0.0, MAX_RPM)
     }

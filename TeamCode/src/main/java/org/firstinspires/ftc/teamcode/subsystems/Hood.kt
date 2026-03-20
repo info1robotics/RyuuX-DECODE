@@ -45,9 +45,16 @@ object Hood {
 
 
     fun calculate(distance: Double): Double {
-        val y = 1.29798 +
-                (-0.09011866 - 1.29798) /
-                (1 + (distance / 268.5674).pow(1.731773))
+        var y =0.0
+        if(distance<=275)
+        {
+            y = 0.6514307 + (-0.04297386 - 0.6514307)/(1 + (distance/153.5256).pow(2.812665))
+        }
+        else
+        {
+            y  = 0.6003789 + (-81110.65 - 0.6003789)/(1 + (distance/103.3978).pow(13.25975))
+        }
+
 
         return MathFunctions.clamp(y, 0.0, 1.0)
     }
