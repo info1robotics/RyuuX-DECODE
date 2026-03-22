@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepuntil
 
 @Autonomous
-@Disabled
 class AutoBlank : AutoBase(Pose(0.0,0.0, Math.toRadians(0.0)),Colours.RED) {
 
     fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees

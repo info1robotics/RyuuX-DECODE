@@ -80,7 +80,7 @@ fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
             execute{ goTo(88.0,93.0,45.0)},//preload-1
             execute{Shooter.charge()},
             execute{Intake.setPowerMain(0.8)},
-            sleepms(800),
+            sleepms(700),
             shootSeq,
             sleepms(600),
 

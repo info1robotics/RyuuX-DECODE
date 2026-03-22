@@ -280,8 +280,8 @@ class Teleop : LinearOpMode() {
             distance = distancePP//change distance method
 
             delay = if(distance<=175) 0
-            else if(distance <200) 300
-            else 500
+            else if(distance <200) 100
+            else 300
 
             rawHeading = follower.pose.heading
             correctedHeading = if(rawHeading < 0)
