@@ -10,10 +10,9 @@ import kotlin.math.PI
 import kotlin.math.atan2
 
 object Turret {
-    //TODO change range for 120 deg
-    var HIGHER_LIMIT = 1.0//85 turning right
-    var LOWER_LIMIT = 0.0//85 turing left
-    var FORWARD_POSITION = 0.5//0 degrees
+    var HIGHER_LIMIT = 0.868//135 turning right
+    var LOWER_LIMIT = 0.1//135 turing left
+    var FORWARD_POSITION = 0.484//0 degrees
 
     private lateinit var servoTurretRight: ServoImplEx//axon max mk2 gear ratio 24-50
     private lateinit var servoTurretLeft: ServoImplEx
@@ -43,13 +42,7 @@ object Turret {
     var targetX = 0.0
     var targetY = 0.0
 
-    private val MAX_TURRET_ANGLE = Math.toRadians(85.0)
-    private val DEADZONE = Math.toRadians(1.0)     // 1 degree
-    private const val ALPHA = 0.15                       // smoothing factor
-    private val BACKLASH_COMP = Math.toRadians(0.8)
-
-    private var filteredServo = FORWARD_POSITION
-    private var lastTurretAngle = 0.0
+    private val MAX_TURRET_ANGLE = Math.toRadians(135.0)
 
     fun lockToTarget(
         robotX: Double,
@@ -86,8 +79,8 @@ object Turret {
 
         // map angle → servo
         val servoPosition =
-            FORWARD_POSITION +
-                    (turretAngle / MAX_TURRET_ANGLE) * 0.46
+            FORWARD_POSITION -
+                    (turretAngle / MAX_TURRET_ANGLE) * 0.396
         +
                     offset
 

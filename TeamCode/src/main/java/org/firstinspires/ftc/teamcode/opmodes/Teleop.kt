@@ -45,8 +45,7 @@ class Teleop : LinearOpMode() {
     private var distance = 0.0
     private var max = 205
     var available = false
-    var angleOffset = 0.0
-    var rpmOffset = 0.0
+    var velOffset = 0.0
 
     var forwardPower =0.0
     var strafePower = 0.0
@@ -109,18 +108,21 @@ class Teleop : LinearOpMode() {
     var supportConverter = 0.0
     private fun handleInputShooter() {
 
-        if(distance < 250)
+        if(distance < 205)
             supportConverter = 0.9
+        else if(distance<240)
+            supportConverter = 0.7
         else
             supportConverter= 0.6
 
         //charge state
-        if((Intake.isUpper() || gamepadEx1.getButtonDown("x")) && !transition && distance<225)
+
+        if(((Intake.isUpper()  && distance<250) || gamepadEx1.getButtonDown("x")) && !transition )
         {
-            Shooter.setRPM(power)// local offset
+            Shooter.setRPM(power+velOffset)
 
         }
-        if(distance<250 || distance>280)
+        if(distance<240 || distance>260)
         {
             far = false
             Hood.setPosition(Hood.calculate(distance))
@@ -128,12 +130,11 @@ class Teleop : LinearOpMode() {
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
-                Intake.setPowerSupport(-0.3)
                 actionQueue.add(delay)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(supportConverter)
-                    actionQueue.add(700)
+                    actionQueue.add(600)
                     {
                         Intake.stop()
                         Shooter.setRPM(0.0)
@@ -152,7 +153,7 @@ class Teleop : LinearOpMode() {
                 {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(supportConverter)
-                    actionQueue.add(700)
+                    actionQueue.add(600)
                     {
                         Intake.stop()
                         Shooter.setRPM(0.0)
@@ -165,7 +166,7 @@ class Teleop : LinearOpMode() {
         }
         else far  = true
         if(transition && (distance<250 || distance>300))
-            Shooter.setRPM(power)
+            Shooter.setRPM(power+velOffset)
 
     }
     var tx = 0.0
@@ -180,7 +181,7 @@ class Teleop : LinearOpMode() {
 
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60) {
+                if(Math.toDegrees(correctedHeading)<307 && Math.toDegrees(correctedHeading)>13) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
                 }
@@ -190,7 +191,7 @@ class Teleop : LinearOpMode() {
                 }
             }
             else {
-                if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-52) {
+                if(Math.toDegrees(rawHeading)<162 && Math.toDegrees(rawHeading)>-98) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
                 }
@@ -273,6 +274,11 @@ class Teleop : LinearOpMode() {
                 )
             }
 
+            if(gamepadEx1.getButtonDown("bumper_right"))
+                velOffset+=15
+            else if(gamepadEx1.getButtonDown("bumper_left"))
+                velOffset-=15
+
             power = Shooter.calculate(distance)
             //var ta = Limelight.getTa()
             //var distanceLL = ta?.let { Limelight.getDistanceToAprilTag(it) }
@@ -280,8 +286,8 @@ class Teleop : LinearOpMode() {
             distance = distancePP//change distance method
 
             delay = if(distance<=175) 0
-            else if(distance <200) 100
-            else 300
+            else if(distance <240) 200
+            else 450
 
             rawHeading = follower.pose.heading
             correctedHeading = if(rawHeading < 0)
@@ -289,6 +295,7 @@ class Teleop : LinearOpMode() {
             else
                 rawHeading
 
+            /*
             log.add("choose alliance colour RED/BLUE by dpad left/right",allianceColour.toString())
             //Limelight.getTx()?.let { log.add("tx", it) }
             //Limelight.getTa()?.let  { log.add("ta", it) }
@@ -300,10 +307,16 @@ class Teleop : LinearOpMode() {
             log.add("@X", follower.pose.x)
             log.add("@Y", follower.pose.y)
             log.add("@Heading", Math.toDegrees(follower.pose.heading))
+            log.add("Corrected heading", Math.toDegrees(correctedHeading))
             log.add("distance from $allianceColour goal: $distancePP")
             log.add(("far "+(far).toString()))
             log.add("power"+Shooter.getRPM())
+
+*/
+            log.add("close pidf shooter",Shooter.close)
             log.tick()
+
+
         }
     }
 }

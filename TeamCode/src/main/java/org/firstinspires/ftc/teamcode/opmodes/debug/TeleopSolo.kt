@@ -171,7 +171,7 @@ class TeleopSolo : LinearOpMode() {
 
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//
+                if(Math.toDegrees(correctedHeading)<307 && Math.toDegrees(correctedHeading)>13)//
                 {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
@@ -184,7 +184,7 @@ class TeleopSolo : LinearOpMode() {
             }
             else
             {
-                if(Math.toDegrees(rawHeading)<120 && Math.toDegrees(rawHeading)>-52)//previously 96 -60
+                if(Math.toDegrees(rawHeading)<162 && Math.toDegrees(rawHeading)>-98)
                 {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
@@ -265,6 +265,8 @@ class TeleopSolo : LinearOpMode() {
                 Math.PI + (rawHeading + Math.PI )
             else
                 rawHeading
+
+
 
             //var ta = Limelight.getTa()
             //var distanceLL = ta?.let { Limelight.getDistanceToAprilTag(it) }
