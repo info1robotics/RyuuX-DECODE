@@ -109,9 +109,9 @@ class Teleop : LinearOpMode() {
     private fun handleInputShooter() {
 
         if(distance < 205)
-            supportConverter = 0.9
+            supportConverter = 1.0
         else if(distance<240)
-            supportConverter = 0.7
+            supportConverter = 0.75
         else
             supportConverter= 0.6
 
@@ -213,11 +213,13 @@ class Teleop : LinearOpMode() {
         val log = Log(telemetry)
 
         follower = Constants.createFollower(hardwareMap);
-        follower.pose = startPose
+        follower.pose = Pose(90.0,
+            83.0,
+            Math.toRadians(0.0))
 
 
         empty=1.0
-        log.tick()
+        //log.tick()
         waitForStart()
 
         while (!gamepad1.dpad_left && !gamepad1.dpad_right);
@@ -237,11 +239,10 @@ class Teleop : LinearOpMode() {
             gamepadEx2.update()
             actionQueue.update()
 
-            follower.update()
             if (gamepad1.dpad_right) {
                 allianceColour = Colours.RED
                 //Limelight.allianceTag = AprilTags.RED
-                follower.pose = Pose(//TODO change to autopos
+                follower.pose = Pose(//TODO carefull, there may be offsets and not the same as autopos
                     91.0,
                     83.0,
                     Math.toRadians(0.0)
@@ -253,14 +254,14 @@ class Teleop : LinearOpMode() {
                 //Limelight.allianceTag = AprilTags.BLUE
                 follower.pose = Pose(
                     55.0,
-                    83.0,
+                    81.0,
                     Math.toRadians(178.0)
                 )
                 wasSelected = true
             }
 
             if (gamepad1.dpad_up && allianceColour==Colours.RED) {
-                follower.pose = Pose(
+                follower.pose = Pose(//120 123 32 for goal
                     120.0,
                     123.0,
                     Math.toRadians(32.0)
@@ -273,7 +274,7 @@ class Teleop : LinearOpMode() {
                     Math.toRadians(148.0)
                 )
             }
-
+            follower.update()
             if(gamepadEx1.getButtonDown("bumper_right"))
                 velOffset+=15
             else if(gamepadEx1.getButtonDown("bumper_left"))
@@ -295,7 +296,7 @@ class Teleop : LinearOpMode() {
             else
                 rawHeading
 
-            /*
+
             log.add("choose alliance colour RED/BLUE by dpad left/right",allianceColour.toString())
             //Limelight.getTx()?.let { log.add("tx", it) }
             //Limelight.getTa()?.let  { log.add("ta", it) }
@@ -312,9 +313,11 @@ class Teleop : LinearOpMode() {
             log.add(("far "+(far).toString()))
             log.add("power"+Shooter.getRPM())
 
-*/
             log.add("close pidf shooter",Shooter.close)
             log.tick()
+
+
+
 
 
         }

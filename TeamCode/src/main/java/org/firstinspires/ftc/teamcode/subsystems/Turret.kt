@@ -10,9 +10,9 @@ import kotlin.math.PI
 import kotlin.math.atan2
 
 object Turret {
-    var HIGHER_LIMIT = 0.868//135 turning right
-    var LOWER_LIMIT = 0.1//135 turing left
-    var FORWARD_POSITION = 0.484//0 degrees
+    var HIGHER_LIMIT = 0.856//135 turning right
+    var LOWER_LIMIT = 0.088//135 turing left  0.9
+    var FORWARD_POSITION = 0.462//0 degrees 0.462
 
     private lateinit var servoTurretRight: ServoImplEx//axon max mk2 gear ratio 24-50
     private lateinit var servoTurretLeft: ServoImplEx

@@ -97,13 +97,15 @@ object Drivetrain {
         val rightFrontPower = (inputAxial - inputLateral - inputYaw) / modMaintainMotorRatio
         val leftBackPower = (inputAxial - inputLateral + inputYaw) / modMaintainMotorRatio
         val rightBackPower = (inputAxial + inputLateral - inputYaw) / modMaintainMotorRatio
-
+        /*
         Log.instance.let {
             it.add("leftFrontPower", leftFrontPower.toString())
             it.add("rightFrontPower", rightFrontPower.toString())
             it.add("leftBackPower", leftBackPower.toString())
             it.add("rightBackPower", rightBackPower.toString())
         }
+
+         */
 
         setDriveMotorPower(leftFrontPower, rightFrontPower, leftBackPower, rightBackPower)
     }

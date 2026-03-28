@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Autonomous
 class AutoCloseRed : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {//32 cm from tile intersection
-var offset =15.0//TODO tune, this is local doesn t affect other classes
+var offset =25.0//TODO tune, this is local doesn t affect other classes
     fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
         follower.holdPoint(temp)
@@ -29,13 +29,13 @@ var offset =15.0//TODO tune, this is local doesn t affect other classes
     private val shootSeq = serial(
         execute{
             Intake.stop()
-            Shooter.setRPM(power)
+            Shooter.setRPM(power+offset)
             actionQueue.add(100)
             {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(300)
                 {
-                    Shooter.setRPM(power)
+                    Shooter.setRPM(power+offset)
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(0.9)
                     actionQueue.add(600)
@@ -76,121 +76,120 @@ var offset =15.0//TODO tune, this is local doesn t affect other classes
         far=false
 
         task = serial(
-            execute{ goTo(88.0,93.0,45.0)},//preload-1
+            execute{ goTo(88.0,93.0,39.0)},//preload-1
             execute{Shooter.charge()},
             execute{Intake.setPowerMain(0.8)},
-            sleepms(650),
+            sleepms(950),
             shootSeq,
             sleepms(600),
 
             execute{ goTo(90.0,63.3,0.0)},//pre collect -2  open gate at y 61.2
             preCollectSeq,
-            sleepms(1000),
-            execute{Turret.setPosition(0.35)},
-            execute{ goTo(118.0,63.3,0.0)},//collectopen gate at x=119 y=61.2
+            sleepms(1150),
+            execute{Turret.setPosition(0.325)},
+            execute{ goTo(112.3,63.3,0.0)},//collectopen gate at x=118 y=61.2
             sleepms(800),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},
             execute{Shooter.charge()},
-            sleepms(300),
-            execute{ goTo(85.0,83.0,0.0)},//shoot
+            sleepms(150),
+            execute{ goTo(82.0,83.0,0.0)},//shoot
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(800),
+            sleepms(900),
             shootSeq,//TODO calibrate the gate position y
-            sleepms(99999999),
 
-            sleepms(600),
-            execute{ goTo(103.0,66.5,0.0)},//
-            sleepms(1100),
-            execute{ goTo(120.0,66.5,0.0)},//collect -3
+            sleepms(500),
+            execute{ goTo(103.0,65.5,0.0)},//
+            sleepms(1000),
+            execute{ goTo(118.0,65.5,0.0)},//collect -3
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
+            sleepms(280),
             preCollectSeq,
-            execute{ goTo(124.0,56.5,45.0)},//push gate
+            execute{ goTo(122.3,56.5,45.0)},//push gate
             sleepms(1100),//wait at gate
             execute{Shooter.charge()},
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(600),
+            sleepms(850),
             shootSeq,
 
-            sleepms(600),
-            execute{ goTo(103.0,66.5,0.0)},//
-            sleepms(1100),
-            execute{ goTo(120.0,66.5,0.0)},//collect -4
+            sleepms(500),
+            execute{ goTo(103.0,65.5,0.0)},//
+            sleepms(1600),//wait for flow
+            execute{ goTo(118.0,65.5,0.0)},//collect -4
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
+            sleepms(380),
             preCollectSeq,
-            execute{ goTo(124.0,56.5,45.0)},//push gate
+            execute{ goTo(122.3,56.5,45.0)},//push gate
             sleepms(1100),//wait at gate
             execute{Shooter.charge()},
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(600),
+            sleepms(800),
             shootSeq,
 
-            sleepms(600),
+            sleepms(500),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },//spike mark
-            execute{ goTo(98.0,82.0,0.0)} ,//pre collect -5
+            execute{ goTo(98.0,83.5,0.0)} ,//pre collect -5
             preCollectSeq,
             sleepms(200),
-            execute{ goTo(119.0,82.0,0.0)},//collect
+            execute{ goTo(118.0,83.5,0.0)},//collect
             sleepms(650),
             afterCollectSeq,
             execute{Shooter.charge()},
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(800),
             shootSeq,
 
-            sleepms(600),
+            sleepms(500),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,66.5,0.0)},//
+            execute{ goTo(103.0,65.5,0.0)},//
             sleepms(1100),
-            execute{ goTo(120.0,66.5,0.0)},//collect -6
+            execute{ goTo(118.0,65.5,0.0)},//collect -6
             execute{Joint.setPosition(Joint.COLLECT_POSITION-0.06)},
-            sleepms(680),
+            sleepms(380),
             preCollectSeq,
-            execute{ goTo(124.5,56.5,45.0)},//push gate
+            execute{ goTo(122.3,56.5,45.0)},//push gate
             sleepms(1100),//wait at gate
             execute{Shooter.charge()},
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(600),
+            sleepms(800),
             shootSeq,
 
 
             sleepms(600),
-            execute { goTo(95.0, 37.5, 0.0) }, // last spike mark -7
+            execute { goTo(93.0, 37.5, 0.0) }, // last spike mark -7
             preCollectSeq,
             sleepms(1200),
-            execute { goTo(122.0, 37.5, 0.0) },//collected
+            execute { goTo(120.0, 37.5, 0.0) },//collected
             sleepms(700),
-            execute{ goTo(85.0,83.0,0.0)},
+            execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(700),
             afterCollectSeq,
             execute{Shooter.charge()},
-            sleepms(700),
+            sleepms(900),
             shootSeq,
 
-            sleepms(600),
-            execute{ goTo(90.0,83.0,0.0)},
+            sleepms(500),
+            execute{ goTo(90.0,83.0,-5.0)},
 
 
             sleepms(999999999),
