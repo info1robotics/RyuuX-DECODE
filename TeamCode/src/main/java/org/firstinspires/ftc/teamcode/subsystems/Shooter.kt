@@ -20,13 +20,12 @@ object Shooter {
     const val MAX_VELOCITY = 1700.0//overshoots
     const val FAR_POWER=1400
     const val SUPER_CYCLE_POWER = 3075.0
-    val offsetClose = 85.0// TODO tune, general use, affects all opmode, can be changed locally on other classes
-    val offsetFar = 145.0
+    val offsetClose = 250.0// TODO tune, general use, affects all opmode, can be changed locally on other classes
+    val offsetFar = 165.0
+    val distanceOffset = 2.0
     var close = true
 
-    private val BASE_PIDF = PIDFCoefficients(190.0, 0.0, 0.0, 14.9)
-    private val CLOSE_PIDF = PIDFCoefficients(190.0, 0.0, 0.0, 14.9)
-    private val FAR_PIDF   = PIDFCoefficients(190.0, 0.0, 2.0, 16.5)
+    private val BASE_PIDF = PIDFCoefficients(155.0, 0.0, 5.0, 11.7)
     //default is 190, 14.9
     fun init(hardwareMap: HardwareMap) {
         motorShooterFirst = hardwareMap.get(DcMotorEx::class.java, "motorShooterFirst")
@@ -120,12 +119,20 @@ object Shooter {
 
     fun calculate(distance: Double): Double {
         var value =0.0
-        value = if(distance<=275) {
+        var convertedDistance = distance - distanceOffset
+        value = if(distance<=195) {
+            205652000 +
+                    (2510.913 - 205652000) /
+                    (1 + (convertedDistance / 17692.07).pow(2.781764)) + offsetClose
+        }
+        else if(distance >195 && distance<=240)
+        {
             3864.831 +
                     (2510.995 - 3864.831) /
-                    (1 + (distance / 189.8164).pow(3.407866)) + offsetClose
-        } else {
-            4518.389 + (3726.74 - 4518.389)/(1 + (distance/349.4118).pow(12.73016)) + offsetFar
+                    (1 + (convertedDistance / 189.8164).pow(3.407866)) + offsetClose
+        }
+            else {
+            4518.389 + (3726.74 - 4518.389)/(1 + (convertedDistance/349.4118).pow(12.73016)) + offsetFar
         }
 
 
@@ -139,15 +146,6 @@ object Shooter {
     fun charge()
     {
         setRPM(2800.0)
-    }
-    fun applyForDistance(distance: Double) {
-        if (distance <= 275) {
-            close = true
-            applyPIDFCoefficients(CLOSE_PIDF)
-        } else {
-            close = false
-            applyPIDFCoefficients(FAR_PIDF)
-        }
     }
 
 }

@@ -14,6 +14,7 @@ object Hood {
     var LOWER_LIMIT = 0.00  //~53 degrees   0.03
 
     var FAR_DEGREE = 40.0
+    var distanceOffset= 2.0
 
     private lateinit var servoHood: ServoImplEx
 
@@ -46,7 +47,12 @@ object Hood {
 
     fun calculate(distance: Double): Double {
         var y =0.0
-        if(distance<=275)
+        var convertedDistance = distance-distanceOffset
+        if(distance<=195)
+        {
+            y = 0.4246272 + (-0.01968272 - 0.4246272)/(1 + (distance/135.4403).pow(5.437693))
+        }
+        else if(distance >195 && distance<240)
         {
             y = 0.6514307 + (-0.04297386 - 0.6514307)/(1 + (distance/153.5256).pow(2.812665))
         }

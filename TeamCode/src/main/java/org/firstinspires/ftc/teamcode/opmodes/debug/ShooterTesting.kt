@@ -16,10 +16,6 @@ class ShooterTesting : LinearOpMode() {
         @JvmField
         var rpm = 0.0 // Set this in FTC Dashboard
         @JvmField
-        var p = 0.0
-        @JvmField
-        var f = 0.0
-        @JvmField
         var velo=0.0
         @JvmField
         var position =0.0
@@ -46,9 +42,9 @@ class ShooterTesting : LinearOpMode() {
             else
                 Shooter.setVelocity(velo)
 
-            var error= velo-Shooter.getVelocity()
+            var error = velo - Shooter.getVelocity()
+            var errorRPM = rpm - Shooter.getRPMfirst()
             val currentRPM = Shooter.getRPM()
-            val voltage = Shooter.getRPM()
 
 
             log.add("Currect velocity",Shooter.getVelocity())
@@ -56,8 +52,10 @@ class ShooterTesting : LinearOpMode() {
             log.add("Target RPM", rpm)
             log.add("Current RPM", currentRPM)
             log.add("Shooter Power", Shooter.getPower())
-            log.add("Voltage", voltage)
-            log.add("error ",error)
+            log.add("Shooter Second",Shooter.getRPMsecond())
+            log.add("Shooter First",Shooter.getRPMfirst())
+            log.add("error velo",error)
+            log.add("error rpm",errorRPM)
             log.tick()
         }
 

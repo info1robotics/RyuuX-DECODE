@@ -111,13 +111,13 @@ class Teleop : LinearOpMode() {
         if(distance < 205)
             supportConverter = 1.0
         else if(distance<240)
-            supportConverter = 0.75
+            supportConverter = 0.9
         else
-            supportConverter= 0.6
+            supportConverter= 0.7
 
         //charge state
 
-        if(((Intake.isUpper()  && distance<250) || gamepadEx1.getButtonDown("x")) && !transition )
+        if(((Intake.isUpper()  /*&& distance<250*/) || gamepadEx1.getButtonDown("x")) && !transition )
         {
             Shooter.setRPM(power+velOffset)
 
@@ -181,7 +181,7 @@ class Teleop : LinearOpMode() {
 
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(correctedHeading)<307 && Math.toDegrees(correctedHeading)>13) {
+                if(Math.toDegrees(correctedHeading)<288 && Math.toDegrees(correctedHeading)>-12) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
                 }
@@ -191,7 +191,7 @@ class Teleop : LinearOpMode() {
                 }
             }
             else {
-                if(Math.toDegrees(rawHeading)<162 && Math.toDegrees(rawHeading)>-98) {
+                if(Math.toDegrees(rawHeading)<182 && Math.toDegrees(rawHeading)>-118) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
                 }
@@ -276,9 +276,9 @@ class Teleop : LinearOpMode() {
             }
             follower.update()
             if(gamepadEx1.getButtonDown("bumper_right"))
-                velOffset+=15
+                velOffset+=50
             else if(gamepadEx1.getButtonDown("bumper_left"))
-                velOffset-=15
+                velOffset-=50
 
             power = Shooter.calculate(distance)
             //var ta = Limelight.getTa()
@@ -287,8 +287,8 @@ class Teleop : LinearOpMode() {
             distance = distancePP//change distance method
 
             delay = if(distance<=175) 0
-            else if(distance <240) 200
-            else 450
+            else if(distance <240) 150
+            else 250
 
             rawHeading = follower.pose.heading
             correctedHeading = if(rawHeading < 0)
@@ -314,6 +314,7 @@ class Teleop : LinearOpMode() {
             log.add("power"+Shooter.getRPM())
 
             log.add("close pidf shooter",Shooter.close)
+            log.add("velocity offset",velOffset)
             log.tick()
 
 

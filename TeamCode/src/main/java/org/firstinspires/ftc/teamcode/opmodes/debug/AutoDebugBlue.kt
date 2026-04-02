@@ -71,17 +71,16 @@ class AutoDebugBlue : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {
             execute{ goTo(88.0,93.0,45.0)},//preload-1
             execute{Shooter.charge(power)},
             execute{Intake.setPowerMain(0.7)},
-            sleepms(1300),
+            sleepms(900),
             shootSeq,
             sleepms(650),
-            sleepms(1100),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,62.5,0.0)},//
-            sleepms(1300),
-            execute{ goTo(122.6,62.5,0.0)},//collect
+            execute{ goTo(40.0,62.5,130.0)},//
+            sleepms(1250),
+            execute{ goTo(14.6,62.5,130.0)},//collect
+            sleepms(900),
             preCollectSeq,
-            sleepms(800),
-            execute{ goTo(125.0,60.0,12.0)},//push gate
+
 
 
 

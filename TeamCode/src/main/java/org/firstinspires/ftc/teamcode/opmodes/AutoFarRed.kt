@@ -41,7 +41,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(400) {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.58)
+                    Intake.setPowerSupport(0.65)
                     actionQueue.add(500)
                     {
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
@@ -62,33 +62,11 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(400) {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.58)
+                    Intake.setPowerSupport(0.65)
                     actionQueue.add(500)
                     {
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
                     }
-                }
-
-            }
-        }
-    )
-
-
-    private val shootSeqPow = serial(
-        execute {
-            Intake.stop()
-            Shooter.setRPM(4070.0)
-            Hood.setPosition(0.5)
-            actionQueue.add(100) {
-                Wicket.setPosition(Wicket.OPEN_POSITION)
-                actionQueue.add(300) {
-                    Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.6)
-                    actionQueue.add(700)
-                    {
-                        Wicket.setPosition(Wicket.CLOSE_POSITION)
-                    }
-
                 }
 
             }
@@ -127,7 +105,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
         task = serial(
             execute{Wicket.setPosition(Wicket.CLOSE_POSITION)},//preload -1
             chargePreload,
-            execute{Turret.setPosition(0.375)},
+            execute{Turret.setPosition(0.517)},
             execute{goTo(90.0,16.0,90.0)},
             sleepms(700),
             shootPreload,
@@ -139,7 +117,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             preCollectSeq,
             execute { goTo(129.0, 37.0, 0.0) },//collected
             sleepms(1000),
-            execute{Turret.setPosition(0.92)},//
+            execute{Turret.setPosition(0.237)},//
             charge,
             execute{goTo(90.0,12.0,0.0)},//shooting position
             sleepms(500),
@@ -201,6 +179,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             shootSeq,
             sleepms(800),
             preCollectSeq,
+
             execute{goTo(134.0,6.0,0.0)},//human player -8
             sleepms(1600),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},

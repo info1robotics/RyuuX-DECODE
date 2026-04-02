@@ -41,7 +41,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(300) {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.6)
+                    Intake.setPowerSupport(0.7)
                     actionQueue.add(700)
                     {
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
@@ -61,27 +61,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
                 Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(300) {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.6)
-                    actionQueue.add(700)
-                    {
-                        Wicket.setPosition(Wicket.CLOSE_POSITION)
-                    }
-
-                }
-
-            }
-        }
-    )
-    private val shootSeqPow = serial(
-        execute {
-            Intake.stop()
-            Shooter.setRPM(4075.0)
-            Hood.setPosition(0.5)
-            actionQueue.add(100) {
-                Wicket.setPosition(Wicket.OPEN_POSITION)
-                actionQueue.add(300) {
-                    Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.6)
+                    Intake.setPowerSupport(0.7)
                     actionQueue.add(700)
                     {
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
@@ -122,7 +102,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
         task = serial(
             execute { Wicket.setPosition(Wicket.CLOSE_POSITION) }, // preload -1
             chargePreload,
-            execute { Turret.setPosition(0.63) },
+            execute { Turret.setPosition(0.396) },
             execute { goTo(54.0, 16.0, 90.0) },
             sleepms(600),
             shootPreload,
@@ -133,7 +113,7 @@ class AutoFarBlue : AutoBase(Pose(54.0, 9.0, Math.toRadians(90.0)),Colours.BLUE)
             preCollectSeq,
             execute { goTo(14.0, 34.0, 180.0) }, // collected
             sleepms(1000),
-            execute{Turret.setPosition(0.09)},
+            execute{Turret.setPosition(0.667)},
             charge,
             execute { goTo(54.0, 16.0, 180.0) },
             sleepms(500),

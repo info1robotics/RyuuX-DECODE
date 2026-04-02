@@ -80,6 +80,7 @@ class AutoAimTesting : LinearOpMode() {
             log.add("Is velocity achieved:",achieved)
             log.add("first velo",Shooter.motorShooterFirst.velocity)
             log.add("second velo",Shooter.motorShooterSecond.velocity)
+            log.add("rpm",Shooter.getRPMfirst())
             //log.add(distanceLL.toString())
             log.tick()
         }

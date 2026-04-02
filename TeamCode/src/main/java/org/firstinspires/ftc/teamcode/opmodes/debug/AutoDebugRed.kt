@@ -68,19 +68,18 @@ class AutoDebugRed : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {
 
 
         task = serial(
-            execute{ goTo(88.0,93.0,45.0)},//preload-1
+            execute{ goTo(88.0,93.0,39.0)},//preload-1
             execute{Shooter.charge(power)},
-            execute{Intake.setPowerMain(0.7)},
-            sleepms(1300),
+            execute{Intake.setPowerMain(0.8)},
+            sleepms(900),
             shootSeq,
             sleepms(650),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,62.5,0.0)},//
-            sleepms(1300),
-            execute{ goTo(122.6,62.5,0.0)},//collect
+            execute{ goTo(103.0,60.5,20.0)},//
+            sleepms(1250),
+            execute{ goTo(121.6,60.5,20.0)},//collect
             sleepms(900),
             preCollectSeq,
-            execute{ goTo(123.0,60.5,12.0)},//push gate
 
 
 
