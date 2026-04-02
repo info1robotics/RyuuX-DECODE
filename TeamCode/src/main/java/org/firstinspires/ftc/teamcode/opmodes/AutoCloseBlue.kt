@@ -119,9 +119,9 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             shootSeq,
 
             sleepms(550),
-            execute { goTo(26.4, 60.6, 160.0) }, // collect -4 gate
+            execute { goTo(26.4, 60.8, 160.0) }, // collect -4 gate
             sleepms(1300),
-            execute { goTo(7.0, 60.6, 160.0) },
+            execute { goTo(7.0, 60.8, 160.0) },
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
@@ -141,7 +141,6 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             sleepms(100),
             execute { goTo(20.0, 82.6, 180.0) }, // collect spike mark
             sleepms(600),
-            afterCollectSeq,
             execute { Shooter.charge() },
             execute { goTo(52.0, 79.0, 180.0) },
             sleepms(500),
@@ -165,6 +164,23 @@ class AutoCloseBlue : AutoBase(Pose(24.0, 123.0, Math.toRadians(138.0)),Colours.
             reverse,
             sleepms(850),
             shootSeq,
+
+            sleepms(600),
+            execute { goTo(44.0, 36.5, 180.0) }, // last spike mark -7
+            preCollectSeq,
+            sleepms(1300),
+            execute { goTo(18.0, 36.5, 180.0) },//collected
+            sleepms(700),
+            execute { goTo(55.0, 83.0, 180.0) },
+            sleepms(200),
+            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
+            sleepms(700),
+            afterCollectSeq,
+            execute{Shooter.charge()},
+            sleepms(900),
+            shootSeq,
+            sleepms(600),
+            execute { goTo(36.0, 83.0, 180.0) },
 
 
             //TODO add the 7ht cycle
