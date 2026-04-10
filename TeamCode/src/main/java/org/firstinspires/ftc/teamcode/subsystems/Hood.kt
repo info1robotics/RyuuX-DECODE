@@ -16,6 +16,7 @@ object Hood {
     var FAR_DEGREE = 40.0
     var distanceOffset= 2.0
 
+
     private lateinit var servoHood: ServoImplEx
 
     fun init(hardwareMap: HardwareMap) {

@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.hardware.ServoImplEx
 
 object  Joint {
 
-    var COLLECT_POSITION = 0.469
-    var INIT_POSITION = 0.29
+    var COLLECT_POSITION = 0.425
+
+    var INIT_POSITION = 0.32
 
     private lateinit var servoJointLeft: ServoImplEx
 
@@ -23,8 +24,8 @@ object  Joint {
     }
 
     fun setPosition(position: Double) {
-        servoJointRight.position = position
-        servoJointLeft.position = position
+        servoJointRight.position = position.coerceIn(COLLECT_POSITION, COLLECT_POSITION)
+        servoJointLeft.position = position.coerceIn(COLLECT_POSITION, COLLECT_POSITION)
     }
 
     fun getPosition(): Double {

@@ -49,6 +49,12 @@ object Drivetrain {
             }
         }
     }
+    fun setBrake()
+    {
+        motors.forEach {  motor ->
+            motor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        }
+    }
 
     fun initAuto(hardwareMap: HardwareMap) {
         LATERAL_MULTIPLIER = 1.1

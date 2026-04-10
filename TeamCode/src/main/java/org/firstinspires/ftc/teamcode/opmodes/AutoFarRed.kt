@@ -56,7 +56,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
     private val shootSeq = serial(
         execute {
             Intake.stop()
-            Shooter.setRPM(4000.0)
+            Shooter.setRPM(4075.0)//4025 for battery
             Hood.setPosition(0.5)
             actionQueue.add(100) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
@@ -117,7 +117,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             preCollectSeq,
             execute { goTo(129.0, 37.0, 0.0) },//collected
             sleepms(1000),
-            execute{Turret.setPosition(0.237)},//
+            execute{Turret.setPosition(0.25)},//
             charge,
             execute{goTo(90.0,12.0,0.0)},//shooting position
             sleepms(500),
@@ -187,6 +187,9 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             afterCollectSeq,
             sleepms(1200),
             shootSeq,
+
+            sleepms(800),
+            execute{goTo(90.0,30.0,0.0)},
 
 
             )

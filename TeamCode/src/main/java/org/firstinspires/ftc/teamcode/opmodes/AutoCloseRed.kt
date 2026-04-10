@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Autonomous
 class AutoCloseRed : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {//32 cm from tile intersection
-var offset =5.0//TODO tune, this is local doesn t affect other classes
+var offset =25.0//TODO tune, this is local doesn t affect other classes
     fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
         follower.holdPoint(temp)
@@ -104,7 +104,7 @@ var offset =5.0//TODO tune, this is local doesn t affect other classes
             sleepms(1300),
             execute{ goTo(122.3,59.2,20.0)},//collect 3
             preCollectSeq,
-            sleepms(1450),
+            sleepms(1600),
             execute{Shooter.charge()},
             execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),
@@ -133,10 +133,10 @@ var offset =5.0//TODO tune, this is local doesn t affect other classes
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },//spike mark
-            execute{ goTo(98.0,83.5,0.0)} ,//pre collect -5
+            execute{ goTo(98.0,84.5,0.0)} ,//pre collect -5
             preCollectSeq,
             sleepms(200),
-            execute{ goTo(114.0,83.5,0.0)},//collect
+            execute{ goTo(114.0,84.5,0.0)},//collect
             sleepms(650),
             afterCollectSeq,
             execute{Shooter.charge()},
@@ -148,9 +148,9 @@ var offset =5.0//TODO tune, this is local doesn t affect other classes
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,58.5,20.0)},//
+            execute{ goTo(103.0,59.5,20.0)},//
             sleepms(1300),
-            execute{ goTo(122.3,58.5,20.0)},//collect -6
+            execute{ goTo(123.3,59.5,20.0)},//collect -6
             preCollectSeq,
             sleepms(1600),//wait at gate
             execute{Shooter.charge()},
