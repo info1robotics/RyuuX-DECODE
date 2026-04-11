@@ -80,7 +80,7 @@ object Turret {
 
         // map angle → servo
         val servoPosition =
-            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.405  + offset).coerceIn(0.0,1.0)
+            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.402  + offset).coerceIn(0.0,1.0)
 
         setPosition(servoPosition)
     }

@@ -64,6 +64,7 @@ class TeleopSolo : LinearOpMode() {
         Drivetrain.driveMecanum(forwardPower, strafePower, primaryRotationPower, 1.0)
         Drivetrain.setBrake()
     }
+    var active = false
     private fun handleInputIntake()
     {
         if(!transition)
@@ -74,42 +75,59 @@ class TeleopSolo : LinearOpMode() {
                 gamepad1.rumbleBlips(1)
             }
 
-            if(gamepad1.b)
+            if(gamepadEx1.getButtonDown("b") && !active)
+                active = true
+            else if (gamepadEx1.getButtonDown("b") && active)
+                active = false
+
+            if(active && !transition)
             {
-                Intake.setPowerMain(1.0)
                 if(Intake.isFull())
+                {
+                    Intake.setPowerMain(0.8)
                     Intake.setPowerSupport(0.1)
+                }
                 else if(!Intake.isEmptyTop())
+                {
+                    Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(0.3)
+                }
                 else
+                {
+                    Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(1.0)
+                }
             }
-            else
+            else if(!transition && !active)
             {
                 Intake.stop()
             }
 
-            if(gamepad1.b)
-                Joint.setPosition(Joint.COLLECT_POSITION)
-            else
-                Joint.setPosition(Joint.INIT_POSITION)
         }
+        Joint.setPosition(Joint.COLLECT_POSITION)
     }
 
-    private fun handleInputJack()
+    private fun handleInputOffsets()
     {
         //previously park
+
         if(gamepadEx1.getButtonDown("y")) velOffset+=15
         if(gamepadEx1.getButtonDown("x")) velOffset-=15
+
+
     }
     var far = false
     var power = 0.0
     var supportConverter = 0.0
     private fun handleInputShooter() {
-        Shooter.setRPM(power+velOffset)
+
+        if(transition || !Intake.isEmptyTop() )
+            Shooter.setRPM(power+velOffset)
+        else
+            Shooter.setRPM(0.0)
 
         if(distance < 205)
-            supportConverter = 1.0
+            supportConverter = 1.0//previously 1.0
         else if(distance<240)
             supportConverter = 0.9
         else
@@ -127,9 +145,9 @@ class TeleopSolo : LinearOpMode() {
                 {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(supportConverter)
-                    actionQueue.add(600)
+                    actionQueue.add(450)//
                     {
-                        Intake.stop()
+                        Shooter.setRPM(0.0)
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
                         transition = false
                         empty = 1.0
@@ -140,7 +158,7 @@ class TeleopSolo : LinearOpMode() {
         else far = true
     }
     var turretOffset = 0.0
-    var velOffset=50//TODO tune it
+    var velOffset=0.0//TODO tune it
     private fun handleInputTurret() {
 
         if(gamepadEx2.getButtonDown("y") && !hold) hold=true
@@ -202,7 +220,7 @@ class TeleopSolo : LinearOpMode() {
             handleInputIntake()
             handleInputShooter()
             handleInputTurret()
-            handleInputJack()
+            handleInputOffsets()
 
             gamepadEx1.update()
             gamepadEx2.update()
@@ -230,10 +248,10 @@ class TeleopSolo : LinearOpMode() {
                 wasSelected = true
             }
             if (gamepad1.dpad_up && allianceColour==Colours.RED) {
-                follower.pose = Pose(//120 123 32 for goal
-                    116.0,
-                    120.0,
-                    Math.toRadians(32.0)
+                follower.pose = Pose(//116 120 32 for goal
+                    115.0,
+                    76.0,
+                    Math.toRadians(-5.0)
                 )
             }
             else if(gamepad1.dpad_up && allianceColour==Colours.BLUE) {
@@ -254,7 +272,7 @@ class TeleopSolo : LinearOpMode() {
             else if(gamepadEx1.getButtonDown("bumper_left"))
                 turretOffset-=0.007
 
-            delay = if(distance<=175) 0
+            delay = if(distance<=175) 100
             else if(distance <200) 150
             else 350
 
@@ -263,6 +281,9 @@ class TeleopSolo : LinearOpMode() {
                 Math.PI + (rawHeading + Math.PI )
             else
                 rawHeading
+
+            Shooter.updateCompensatedPIDF()
+
         }
     }
 }

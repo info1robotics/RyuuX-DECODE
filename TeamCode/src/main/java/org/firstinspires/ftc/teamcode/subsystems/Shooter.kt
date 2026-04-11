@@ -20,13 +20,12 @@ object Shooter {
     const val MAX_VELOCITY = 1700.0//overshoots
     const val FAR_POWER=1400
     const val SUPER_CYCLE_POWER = 3075.0
-    val offsetClose = 250.0// TODO tune, general use, affects all opmode, can be changed locally on other classes
+    val offsetClose = 90.0// TODO tune, general use, affects all opmode, can be changed locally on other classes
     val offsetFar = 165.0
     val distanceOffset = 2.0
     var close = true
 
-    private val BASE_PIDF = PIDFCoefficients(155.0, 0.0, 5.0, 11.7)
-    //default is 190, 14.9
+    private val BASE_PIDF = PIDFCoefficients(155.0, 0.0, 5.0, 11.7)// p = 155  d = 5.0 f = 11.7
     fun init(hardwareMap: HardwareMap) {
         motorShooterFirst = hardwareMap.get(DcMotorEx::class.java, "motorShooterFirst")
         motorShooterSecond = hardwareMap.get(DcMotorEx::class.java, "motorShooterSecond")
@@ -53,18 +52,18 @@ object Shooter {
     }
 
     fun applyPIDFCoefficients(base: PIDFCoefficients) {
-        val compensated = PIDFCoefficients(base.p, base.i, base.d, base.f)
+        val base = PIDFCoefficients(base.p, base.i, base.d, base.f)
         motorShooterFirst.setVelocityPIDFCoefficients(
-            compensated.p,
-            compensated.i,
-            compensated.d,
-            compensated.f
+            base.p,
+            base.i,
+            base.d,
+            base.f
         )
         motorShooterSecond.setVelocityPIDFCoefficients(
-            compensated.p,
-            compensated.i,
-            compensated.d,
-            compensated.f
+            base.p,
+            base.i,
+            base.d,
+            base.f
         )
     }
 
@@ -137,6 +136,24 @@ object Shooter {
 
 
         return MathFunctions.clamp(value, 0.0, MAX_RPM)
+    }
+    fun updateCompensatedPIDF()
+    {
+        val voltage = voltageSensor.voltage
+        val compensatedF = BASE_PIDF.f * (12.0 / voltage)
+        val compensated = PIDFCoefficients(BASE_PIDF.p, BASE_PIDF.i, BASE_PIDF.d, compensatedF)
+        motorShooterFirst.setVelocityPIDFCoefficients(
+            compensated.p,
+            compensated.i,
+            compensated.d,
+            compensated.f
+        )
+        motorShooterSecond.setVelocityPIDFCoefficients(
+            compensated.p,
+            compensated.i,
+            compensated.d,
+            compensated.f
+        )
     }
 
     fun charge(power:Double)
