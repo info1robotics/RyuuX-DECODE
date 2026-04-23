@@ -10,9 +10,9 @@ import kotlin.math.PI
 import kotlin.math.atan2
 
 object Turret {
-    var HIGHER_LIMIT = 0.944//155 turning right
-    var LOWER_LIMIT = 0.0//155 turing left  0.9
-    var FORWARD_POSITION = 0.462//0 degrees 0.462
+    var HIGHER_LIMIT = 0.966//155 turning right
+    var LOWER_LIMIT = 0.022//155 turing left  0.9
+    var FORWARD_POSITION = 0.484//0 degrees 0.7
     var offset = 0.038
 
     private lateinit var servoTurretRight: ServoImplEx//axon max mk2 gear ratio 24-50
@@ -85,5 +85,59 @@ object Turret {
         setPosition(servoPosition)
     }
 
+    var direction = 1.0
+
+    //VELO COMPENSATION
+    fun lockToTarget(
+        robotX: Double,
+        robotY: Double,
+        robotHeading: Double,
+        allianceColour: Colours,
+        velocityX: Double,   // robot-centric X (forward)
+        velocityY: Double,   // robot-centric Y (left)
+        offset: Double
+    ) {
+
+        // ✅ field target positions
+        if (allianceColour == Colours.BLUE) {
+            targetX = 14.0
+            targetY = 130.0
+        } else {
+            targetX = 130.0
+            targetY = 130.0
+        }
+
+        // 🔥 convert robot-centric velocity → field-centric
+        val fieldVx = velocityX * kotlin.math.cos(robotHeading) - velocityY * kotlin.math.sin(robotHeading)
+        val fieldVy = velocityX * kotlin.math.sin(robotHeading) + velocityY * kotlin.math.cos(robotHeading)
+
+        // 🔥 lookahead time (TUNE THIS)
+        val lookaheadTime = 0.36//0.36
+
+        val compensationSign = if (allianceColour == Colours.BLUE) -1.0 else 1.0
+
+        val dx = targetX - robotX - compensationSign * fieldVx * lookaheadTime
+        val dy = targetY - robotY - compensationSign * fieldVy * lookaheadTime
+
+        // angle to target (field frame)
+        val targetAngleField = atan2(dy, dx)
+
+        // convert to robot frame
+        var turretAngle = targetAngleField - robotHeading
+
+        // normalize angle to [-PI, PI]
+        while (turretAngle > PI) turretAngle -= 2 * PI
+        while (turretAngle < -PI) turretAngle += 2 * PI
+
+        // clamp turret range
+        turretAngle = turretAngle.coerceIn(-MAX_TURRET_ANGLE, MAX_TURRET_ANGLE)
+
+        // map angle → servo position
+        val servoPosition =
+            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.402 + offset)
+                .coerceIn(0.0, 1.0)
+
+        setPosition(servoPosition)
+    }
 
 }

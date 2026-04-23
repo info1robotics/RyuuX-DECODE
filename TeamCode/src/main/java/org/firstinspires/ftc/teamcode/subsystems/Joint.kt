@@ -7,10 +7,10 @@ import com.qualcomm.robotcore.hardware.ServoImplEx
 
 object  Joint {
 
-    var COLLECT_POSITION = 0.425
-
-    var INIT_POSITION = 0.332
-    var LOWER_LIMIT = 0.332//should be the asme as collect position but use it to calibrate
+    var COLLECT_POSITION = 0.18
+    var SAFE_POSITION = COLLECT_POSITION+0.22
+    var INIT_POSITION = COLLECT_POSITION
+    var LOWER_LIMIT = 0.17//should be the asme as collect position but use it to calibrate
 
     private lateinit var servoJointLeft: ServoImplEx
 
@@ -25,8 +25,8 @@ object  Joint {
     }
 
     fun setPosition(position: Double) {
-        servoJointRight.position = position.coerceIn(LOWER_LIMIT, LOWER_LIMIT)
-        servoJointLeft.position = position.coerceIn(LOWER_LIMIT, LOWER_LIMIT)
+        servoJointRight.position = position.coerceIn(LOWER_LIMIT, 1.0)
+        servoJointLeft.position = position.coerceIn(LOWER_LIMIT, 1.0)
     }
 
     fun getPosition(): Double {

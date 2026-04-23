@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes
 import com.pedropathing.follower.Follower
 import com.pedropathing.geometry.Pose
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
@@ -24,7 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Wicket
 import org.firstinspires.ftc.teamcode.subsystems.extra.Limelight
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepuntil
 import kotlin.math.absoluteValue
-
+@Disabled
 @TeleOp(name = "@TeleopSolo")
 class TeleopSolo : LinearOpMode() {
 
@@ -283,6 +284,7 @@ class TeleopSolo : LinearOpMode() {
                 rawHeading
 
             Shooter.updateCompensatedPIDF()
+            log.tick()
 
         }
     }

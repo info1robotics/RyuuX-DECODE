@@ -48,6 +48,8 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     var rawHeading = 0.0
     var correctedHeading =0.0
 
+    var velox = 0.0
+    var veloy = 0.0
 @CallSuper
     open fun onInit() {
         gamepadEx1 = GamepadEx(gamepad1)
@@ -88,11 +90,17 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         state = State.START
         task.start(this)
     }
+    var turretOffsetBlue =0.0
 
     fun onStartTick() {
-        //turretLock()
+        turretLock()
+        //Shooter.updateCompensatedPIDF()
         distance = Pinpoint.distance(follower.pose.x,follower.pose.y, allianceColour)
-        power = Shooter.calculate(distance)
+        velox=follower.velocity.xComponent
+        veloy=follower.velocity.yComponent
+
+        power = Shooter.calculate(distance,velox,veloy,correctedHeading,follower.pose.x,follower.pose.y,allianceColour)
+
         deg = Hood.calculate(distance)
         if(!far)
             Hood.setPosition(deg)
@@ -158,16 +166,16 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         if(allianceColour==Colours.BLUE)
         {
             if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//previously 96 -60
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,0.0)
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,-0.014)
             else
-                Turret.setPosition(Turret.FORWARD_POSITION)
+                Turret.hold()
         }
         else
         {
             if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)//previously 96 -60
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,0.0)
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,0.014)//TODO tune
             else
-                Turret.setPosition(Turret.FORWARD_POSITION)
+                Turret.hold()
         }
     }
 

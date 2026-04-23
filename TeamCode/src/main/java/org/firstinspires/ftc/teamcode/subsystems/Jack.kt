@@ -9,7 +9,7 @@ object Jack {
 
     var offset = -0.00
     var INIT_POSITION = 0.15
-    var PARKED_POSITION = 0.8
+    var PARKED_POSITION = 1.0
     var STEP = 0.05
     private lateinit var servoJackFirst: ServoImplEx
     private lateinit var servoJackSecond: ServoImplEx

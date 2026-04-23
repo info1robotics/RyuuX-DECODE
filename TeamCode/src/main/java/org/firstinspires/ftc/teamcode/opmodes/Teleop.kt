@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.common.AutoConstants
 import org.firstinspires.ftc.teamcode.common.GamepadEx
 import org.firstinspires.ftc.teamcode.common.Log
 import org.firstinspires.ftc.teamcode.enums.Colours
-import org.firstinspires.ftc.teamcode.opmodes.debug.ShooterTesting
 import org.firstinspires.ftc.teamcode.pedro.Constants
 import org.firstinspires.ftc.teamcode.pinpoint.Pinpoint
 import org.firstinspires.ftc.teamcode.subsystems.Controller
@@ -28,6 +27,7 @@ import kotlin.math.absoluteValue
 
 @TeleOp(name = "@Teleop")
 class Teleop : LinearOpMode() {
+
     fun Gamepad.corrected_left_stick_y(): Float = -this.left_stick_y
 
     private var startPose: Pose = AutoConstants.CENTER_POS
@@ -44,17 +44,17 @@ class Teleop : LinearOpMode() {
     private var distancePP = 0.0//distance got from odo
     private var distance = 0.0
     private var max = 205
+    private var correctedHeading = 0.0
+    private  var rawHeading = 0.0
     var available = false
-    var velOffset = 0.0
-    var turretOffset =0.0
-    var TURRET_SETP_SIZE = 0.015
+    var compensation = 0.0
+
+    var hold = false
 
     var forwardPower =0.0
     var strafePower = 0.0
     var primaryRotationPower = 0.0
     var delay = 0L
-    var rawHeading = 0.0
-    var correctedHeading = 0.0
 
     private fun handleInputDrivetrain()
     {
@@ -62,44 +62,54 @@ class Teleop : LinearOpMode() {
         strafePower =  gamepad1.left_stick_x.toDouble()
         primaryRotationPower = (gamepad1.right_trigger.toDouble() - gamepad1.left_trigger.toDouble())
         Drivetrain.driveMecanum(forwardPower, strafePower, primaryRotationPower, 1.0)
+        Drivetrain.setBrake()
     }
+    var active = false
     private fun handleInputIntake()
     {
         if(!transition)
         {
 
-            if(Intake.isUpper())
+            if(!Intake.isEmptyBottom())
             {
                 gamepad1.rumbleBlips(1)
-                gamepad2.rumbleBlips(1)
             }
 
-            if (gamepad2.left_trigger > 0.1 )
-            {
-                Intake.reverse()
-            }
-            else
-            {
-                Intake.setPowerMain(gamepad2.right_trigger.toDouble())
+            if(gamepadEx1.getButtonDown("b") && !active)
+                active = true
+            else if (gamepadEx1.getButtonDown("b") && active)
+                active = false
 
+            if(active && !transition)
+            {
                 if(Intake.isFull())
-                    Intake.setPowerSupport(0.1)
+                {
+                    Intake.setPowerMain(0.8)
+                    Intake.setPowerSupport(0.2)
+                }
                 else if(!Intake.isEmptyTop())
-                    Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(0.3))
+                {
+                    Intake.setPowerMain(1.0)
+                    Intake.setPowerSupport(0.3)
+                }
                 else
-                    Intake.setPowerSupport((gamepad2.right_trigger.toDouble())*(1.0))
+                {
+                    Intake.setPowerMain(1.0)
+                    Intake.setPowerSupport(0.8)
+                }
+            }
+            else if(!transition && !active)
+            {
+                Intake.stop()
             }
 
-            if(gamepad2.right_bumper)
-                Joint.setPosition(0.31)
-            else if(gamepad2.left_bumper)
-                Joint.setPosition(Joint.COLLECT_POSITION+0.18)
-            else if(gamepad2.right_trigger+gamepad2.left_trigger>0)
-                Joint.setPosition(Joint.COLLECT_POSITION)
-            else
-                Joint.setPosition(Joint.INIT_POSITION)
         }
+        if(gamepad2.right_bumper || gamepad1.right_stick_y>0)
+            Joint.setPosition(Joint.COLLECT_POSITION+0.2)
+        else
+            Joint.setPosition(Joint.COLLECT_POSITION)
     }
+
     private fun handleInputJack()
     {
         if(gamepad2.dpad_up) Jack.setPosition(Jack.PARKED_POSITION)
@@ -108,49 +118,43 @@ class Teleop : LinearOpMode() {
     var far = false
     var power = 0.0
     var supportConverter = 0.0
+    var velOffset=0.0//TODO tune it
+    var charge = false
     private fun handleInputShooter() {
 
+
+        if(gamepadEx2.getButtonDown("b") && !charge)
+            charge = true
+        else if(gamepadEx2.getButtonDown("b") && charge)
+            charge = false
+
+        if(transition || !Intake.isEmptyTop() || charge)
+            Shooter.setRPM(power + velOffset)
+        else
+            Shooter.setRPM(0.0)
+
         if(distance < 205)
-            supportConverter = 1.0
+            supportConverter = 1.0//previously 1.0
         else if(distance<240)
             supportConverter = 0.9
         else
             supportConverter= 0.7
 
-        //charge state
-        if(distance<240 || distance>260)
+        if(distance<240 || distance > 260)
         {
             far = false
             Hood.setPosition(Hood.calculate(distance))
             if(gamepadEx1.getButtonDown("a") && available)
             {
-                Wicket.setPosition(Wicket.OPEN_POSITION)
                 transition=true
+                Wicket.setPosition(Wicket.OPEN_POSITION)
                 actionQueue.add(delay)//if this doesn t work 1200
                 {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(supportConverter)
-                    actionQueue.add(600)
+                    actionQueue.add(300)//
                     {
-                        Intake.stop()
-                        Wicket.setPosition(Wicket.CLOSE_POSITION)
-                        transition = false
-                        empty = 1.0
-                    }
-                }
-            }
-            if(gamepadEx1.getButtonDown("b") && available)
-            {
-                Wicket.setPosition(Wicket.OPEN_POSITION)
-                transition=true
-                Intake.setPowerSupport(-0.4)
-                actionQueue.add(300)//if this doesn t work 1200
-                {
-                    Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(supportConverter)
-                    actionQueue.add(600)
-                    {
-                        Intake.stop()
+                        Shooter.setRPM(0.0)
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
                         transition = false
                         empty = 1.0
@@ -158,12 +162,11 @@ class Teleop : LinearOpMode() {
                 }
             }
         }
-        else far  = true
-        Shooter.setRPM(power+velOffset)
-
+        else far = true
     }
-    var tx = 0.0
-    var hold = false
+    var turretOffset = 0.0
+    var velox=0.0
+    var veloy=0.0
     private fun handleInputTurret() {
 
         if(gamepadEx2.getButtonDown("y") && !hold) hold=true
@@ -176,28 +179,34 @@ class Teleop : LinearOpMode() {
             {
                 if(Math.toDegrees(correctedHeading)<288 && Math.toDegrees(correctedHeading)>-12) {
                     available=true
-                    Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,turretOffset)
+                    Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,turretOffset)
                 }
                 else {
                     available=false
-                    Turret.hold()
+                    Turret.setPosition(Turret.FORWARD_POSITION)
                 }
             }
             else {
                 if(Math.toDegrees(rawHeading)<182 && Math.toDegrees(rawHeading)>-118) {
                     available=true
-                    Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,turretOffset)
+                    Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,turretOffset)
                 }
                 else {
                     available=false
-                    Turret.hold()
+                    Turret.setPosition(Turret.FORWARD_POSITION)
                 }
             }
         }
         else Turret.hold()
     }
+    private fun handleInputOffsets()
+    {
+        //previously park
 
-    var wasSelected = false
+        if(gamepadEx1.getButtonDown("y")) velOffset+=15
+        if(gamepadEx1.getButtonDown("x")) velOffset-=15
+    }
+    var wasSelected =false
     override fun runOpMode() {
         Controller.init(hardwareMap)
         Pinpoint.init(hardwareMap)
@@ -215,7 +224,6 @@ class Teleop : LinearOpMode() {
         empty=1.0
         //log.tick()
         waitForStart()
-
         while (!gamepad1.dpad_left && !gamepad1.dpad_right);
         Controller.setInit()
         gamepadEx1 = GamepadEx(gamepad1)
@@ -228,15 +236,17 @@ class Teleop : LinearOpMode() {
             handleInputShooter()
             handleInputTurret()
             handleInputJack()
+            handleInputOffsets()
 
             gamepadEx1.update()
             gamepadEx2.update()
             actionQueue.update()
 
+            follower.update()
             if (gamepad1.dpad_right) {
                 allianceColour = Colours.RED
                 //Limelight.allianceTag = AprilTags.RED
-                follower.pose = Pose(//TODO carefull, there may be offsets and not the same as autopos
+                follower.pose = Pose(
                     91.0,
                     83.0,
                     Math.toRadians(0.0)
@@ -244,50 +254,47 @@ class Teleop : LinearOpMode() {
                 wasSelected = true
             }
             else if (gamepad1.dpad_left) {
-                allianceColour = Colours.BLUE//TODO change to autopos
+                allianceColour = Colours.BLUE
                 //Limelight.allianceTag = AprilTags.BLUE
                 follower.pose = Pose(
-                    55.0,
-                    81.0,
-                    Math.toRadians(178.0)
+                    36.0,
+                    83.0,
+                    Math.toRadians(-2.0)
                 )
                 wasSelected = true
             }
-            if (gamepad1.dpad_up && allianceColour==Colours.RED) {
-                follower.pose = Pose(//120 123 32 for goal
-                    116.0,
-                    120.0,
-                    Math.toRadians(32.0)
+            if (gamepad1.dpad_up && allianceColour==Colours.RED) {//TODO RESETS at gate
+                velOffset = 0.0
+                turretOffset = 0.014
+                follower.pose = Pose(//116 120 32 for goal
+                    115.0,
+                    76.0,
+                    Math.toRadians(-5.0)
+
                 )
             }
             else if(gamepad1.dpad_up && allianceColour==Colours.BLUE) {
+                velOffset = 0.0
+                turretOffset = 0.0
                 follower.pose = Pose(
-                    26.0,
-                    121.0,
-                    Math.toRadians(148.0)
+                    29.0,
+                    73.0,
+                    Math.toRadians(177.0)
                 )
             }
-            follower.update()
 
-            if(gamepadEx2.getButtonDown("dpad_right"))
-                velOffset+=50
-            else if(gamepadEx2.getButtonDown("dpad_left"))
-                velOffset-=50
+            power = Shooter.calculate(distance,velox,veloy,correctedHeading,follower.pose.x,follower.pose.y,allianceColour)
 
-            if(gamepadEx1.getButtonDown("bumper_right"))
-                turretOffset+=TURRET_SETP_SIZE
-            else if(gamepadEx1.getButtonDown("bumper_left"))
-                turretOffset-=TURRET_SETP_SIZE
-
-
-            power = Shooter.calculate(distance)
-            //var ta = Limelight.getTa()
-            //var distanceLL = ta?.let { Limelight.getDistanceToAprilTag(it) }
             distancePP = Pinpoint.distance(follower.pose.x,follower.pose.y, allianceColour)
             distance = distancePP//change distance method
 
-            delay = if(distance<=175) 0
-            else if(distance <240) 150
+            if(gamepadEx1.getButtonDown("bumper_right"))
+                turretOffset+=0.007
+            else if(gamepadEx1.getButtonDown("bumper_left"))
+                turretOffset-=0.007
+
+            delay = if(distance<=175) 50
+            else if(distance <200) 100
             else 350
 
             rawHeading = follower.pose.heading
@@ -296,33 +303,22 @@ class Teleop : LinearOpMode() {
             else
                 rawHeading
 
+            velox = follower.velocity.xComponent
+            veloy = follower.velocity.yComponent
 
-            log.add("choose alliance colour RED/BLUE by dpad left/right",allianceColour.toString())
-            //Limelight.getTx()?.let { log.add("tx", it) }
-            //Limelight.getTa()?.let  { log.add("ta", it) }
-            //tx= Limelight.getTx()!!
-            log.add("distanceLL $distanceLL")
-            log.add("distancePP $distancePP")
-            log.add("Intake has 3 balls",Intake.isFull())
-            //log.add("rgb",Intake.getColorReading())
-            log.add("@X", follower.pose.x)
-            log.add("@Y", follower.pose.y)
-            log.add("@Heading", Math.toDegrees(follower.pose.heading))
-            log.add("Corrected heading", Math.toDegrees(correctedHeading))
-            log.add("distance from $allianceColour goal: $distancePP")
-            log.add(("far "+(far).toString()))
-            log.add("power"+Shooter.getRPM())
+            log.add("charge",charge)
+            log.add("x",follower.pose.x)
+            log.add("y",follower.pose.y)
+            log.add("corrected hed",Math.toRadians(correctedHeading))
+            log.add("raw hed",Math.toRadians(rawHeading))
+            log.add("turret offset, the step is 0.007:",turretOffset)
 
-            log.add("close pidf shooter",Shooter.close)
-            log.add("velocity offset",velOffset)
-            log.add("turret offset",turretOffset)
+
+            log.add("velox",follower.velocity.xComponent)
+            log.add("veloy",follower.velocity.yComponent)
+
+            Shooter.updateCompensatedPIDF()
             log.tick()
-
-
-
-
-
-
 
         }
     }

@@ -25,7 +25,6 @@ object Pinpoint {
             Colours.BLUE -> BLUE_GOAL_X to BLUE_GOAL_Y
 
         }
-
         return cm * sqrt(
             (goalX - currentX).pow(2) +
                     (goalY - currentY).pow(2)
