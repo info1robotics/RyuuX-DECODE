@@ -165,14 +165,14 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     {
         if(allianceColour==Colours.BLUE)
         {
-            if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)//previously 96 -60
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,-0.0012)//0.00 for auto 24
+            if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,-0.00)//21 auto -0.0012 and for 24 auto -0.0
             else
                 Turret.setPosition(Turret.FORWARD_POSITION)
         }
         else
         {
-            if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)//previously 96 -60
+            if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)
                 Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,0.014)//TODO tune
             else
                 Turret.setPosition(Turret.FORWARD_POSITION)
