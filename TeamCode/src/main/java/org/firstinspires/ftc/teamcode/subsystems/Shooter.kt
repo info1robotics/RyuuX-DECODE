@@ -140,6 +140,7 @@ object Shooter {
 
         return MathFunctions.clamp(value, 0.0, MAX_RPM)
     }
+    var velocityTowardsGoal = 0.0
     fun calculate(
         distance: Double,
         velocityX: Double,   // robot-centric (forward)
@@ -172,10 +173,11 @@ object Shooter {
         val uy = dy / dist
 
         // 🚀 Velocity toward goal (dot product)
-        val velocityTowardsGoal = -(fieldVX * ux + fieldVY * uy)
+        val compensationSign = if (colour == Colours.BLUE) -1.0 else 1.0
+        velocityTowardsGoal = (fieldVX * ux + fieldVY * uy)*compensationSign
 
         // 🔥 TUNE THIS CONSTANT
-        val k = 1.2
+        val k = 1.25
 
         val velocityCompensation = velocityTowardsGoal * k
 

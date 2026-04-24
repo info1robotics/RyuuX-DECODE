@@ -172,12 +172,12 @@ class Teleop : LinearOpMode() {
         if(gamepadEx2.getButtonDown("y") && !hold) hold=true
         else if(gamepadEx2.getButtonDown("y") && hold) hold=false
 
-        if(!hold)
+        if(!hold && follower.pose.y>20 && follower.pose.x>20 && follower.pose.x<124)
         {
 
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(correctedHeading)<288 && Math.toDegrees(correctedHeading)>-12) {
+                if(Math.toDegrees(correctedHeading)<273 && Math.toDegrees(correctedHeading)>-12) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,turretOffset)
                 }
@@ -187,7 +187,7 @@ class Teleop : LinearOpMode() {
                 }
             }
             else {
-                if(Math.toDegrees(rawHeading)<182 && Math.toDegrees(rawHeading)>-118) {
+                if(Math.toDegrees(rawHeading)<182 && Math.toDegrees(rawHeading)>-80) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,turretOffset)
                 }
@@ -197,7 +197,7 @@ class Teleop : LinearOpMode() {
                 }
             }
         }
-        else Turret.hold()
+        else Turret.setPosition(Turret.FORWARD_POSITION)
     }
     private fun handleInputOffsets()
     {
@@ -313,10 +313,10 @@ class Teleop : LinearOpMode() {
             log.add("raw hed",Math.toRadians(rawHeading))
             log.add("turret offset, the step is 0.007:",turretOffset)
 
-
+            log.add("turret pos",Turret.getPosition())
             log.add("velox",follower.velocity.xComponent)
             log.add("veloy",follower.velocity.yComponent)
-
+            log.add("vToward:",Shooter.velocityTowardsGoal)
             Shooter.updateCompensatedPIDF()
             log.tick()
 
