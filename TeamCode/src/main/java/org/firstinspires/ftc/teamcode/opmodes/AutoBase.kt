@@ -51,7 +51,8 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     var velox = 0.0
     var veloy = 0.0
 
-    val offsetRed =0.0
+    val offsetRed21 =0.0
+    val offsetRed24 =0.00
     val offsetBlue21 = -0.0012
     val offsetBlue24 = 0.0
 @CallSuper
@@ -177,7 +178,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         else
         {
             if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,offsetRed)//TODO tune
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,offsetRed24)//TODO tune
             else
                 Turret.setPosition(Turret.FORWARD_POSITION)
         }

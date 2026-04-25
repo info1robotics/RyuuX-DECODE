@@ -136,7 +136,7 @@ class Teleop : LinearOpMode() {
         if(distance < 205)
             supportConverter = 1.0//previously 1.0
         else if(distance<240)
-            supportConverter = 0.9
+            supportConverter = 1.0
         else
             supportConverter= 0.7
 
@@ -265,7 +265,7 @@ class Teleop : LinearOpMode() {
             }
             if (gamepad1.dpad_up && allianceColour==Colours.RED) {//TODO RESETS at gate
                 velOffset = 0.0
-                turretOffset = 0.014
+                turretOffset = 0.007
                 follower.pose = Pose(//116 120 32 for goal
                     115.0,
                     76.0,
@@ -295,7 +295,7 @@ class Teleop : LinearOpMode() {
 
             delay = if(distance<=175) 50
             else if(distance <200) 100
-            else 350
+            else 150
 
             rawHeading = follower.pose.heading
             correctedHeading = if(rawHeading < 0)
