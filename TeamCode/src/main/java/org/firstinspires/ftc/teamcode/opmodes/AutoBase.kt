@@ -50,6 +50,10 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
 
     var velox = 0.0
     var veloy = 0.0
+
+    val offsetRed =0.0
+    val offsetBlue21 = -0.0012
+    val offsetBlue24 = 0.0
 @CallSuper
     open fun onInit() {
         gamepadEx1 = GamepadEx(gamepad1)
@@ -166,14 +170,14 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         if(allianceColour==Colours.BLUE)
         {
             if(Math.toDegrees(correctedHeading)<230 && Math.toDegrees(correctedHeading)>60)
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,-0.00)//21 auto -0.0012 and for 24 auto -0.0
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,offsetBlue21)//21 auto -0.0012 and for 24 auto -0.0
             else
                 Turret.setPosition(Turret.FORWARD_POSITION)
         }
         else
         {
             if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,0.014)//TODO tune
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,offsetRed)//TODO tune
             else
                 Turret.setPosition(Turret.FORWARD_POSITION)
         }

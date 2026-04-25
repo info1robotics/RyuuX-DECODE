@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx
 
 object  Joint {
 
-    var COLLECT_POSITION = 0.22
+    var COLLECT_POSITION = 0.21
     var SAFE_POSITION = COLLECT_POSITION+0.22
     var INIT_POSITION = COLLECT_POSITION
     var LOWER_LIMIT = 0.17//should be the asme as collect position but use it to calibrate
