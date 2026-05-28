@@ -30,4 +30,10 @@ object Pinpoint {
                     (goalY - currentY).pow(2)
         )- offset
     }
+    fun inBorder(xCurrent:Double,yCurrent:Double): Boolean {
+        if(yCurrent>30 && xCurrent>30 && xCurrent<114)
+            return true
+        else
+            return false
+    }
 }

@@ -41,6 +41,7 @@ class TurretTesting : LinearOpMode() {
             log.add("@Y", follower.pose.y)
             log.add("@Heading", Math.toDegrees(follower.pose.heading))
             log.add("Turret position",Turret.getPosition())
+            log.add("Turret position centered",Turret.FORWARD_POSITION)
             follower.update()
             log.tick()
         }

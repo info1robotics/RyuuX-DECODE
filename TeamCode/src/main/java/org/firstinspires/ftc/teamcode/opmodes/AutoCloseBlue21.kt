@@ -85,20 +85,20 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             execute { Intake.setPowerMain(0.8) },
             execute { Turret.setPosition(0.48)},
 
-            sleepms(950),
+            sleepms(850),
             shootSeq,
             sleepms(610),
 
             execute { goTo(45.0, 62.2, 180.0) }, // pre collect -2
             preCollectSeq,
-            sleepms(900),
+            sleepms(800),
             execute{Turret.setPosition(0.62)},
             execute { goTo(26.0, 62.2, 180.0) }, // collect
             sleepms(600),
             afterCollectSeq,
             execute { Shooter.charge() },
             sleepms(200),
-            execute { goTo(52.0, 79.0, 180.0) },
+            execute { goTo(54.0, 79.0, 180.0) },
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(850),
@@ -111,7 +111,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
-            execute { goTo(52.0, 79.0, 180.0) },
+            execute { goTo(54.0, 79.0, 180.0) },
             sleepms(200),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.2) },
             sleepms(500),
@@ -127,7 +127,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
-            execute { goTo(52.0, 79.0, 180.0) },
+            execute { goTo(54.0, 79.0, 180.0) },
             sleepms(200),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.2) },
             sleepms(500),
@@ -144,7 +144,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             execute { goTo(20.0, 82.6, 180.0) }, // collect spike mark
             sleepms(600),
             execute { Shooter.charge() },
-            execute { goTo(52.0, 79.0, 180.0) },
+            execute { goTo(54.0, 79.0, 180.0) },
             sleepms(500),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
             sleepms(850),
@@ -158,7 +158,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
-            execute { goTo(52.0, 79.0, 180.0) },
+            execute { goTo(54.0, 79.0, 180.0) },
             sleepms(200),
             execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.2) },
             sleepms(500),
@@ -181,7 +181,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             execute{Shooter.charge()},
             sleepms(900),
             shootSeq,
-            sleepms(600),
+            sleepms(500),
             execute { goTo(36.0, 83.0, 180.0) },
 
 

@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.subsystems
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.PwmControl.PwmRange
+import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.ServoImplEx
+import org.firstinspires.ftc.teamcode.common.ActionQueue
 import org.firstinspires.ftc.teamcode.common.PidController
 import org.firstinspires.ftc.teamcode.enums.Colours
 import org.firstinspires.ftc.teamcode.pinpoint.Pinpoint
@@ -10,9 +12,9 @@ import kotlin.math.PI
 import kotlin.math.atan2
 
 object Turret {
-    var HIGHER_LIMIT = 0.982//155 turning right
-    var LOWER_LIMIT = 0.038//155 turing left  0.9
-    var FORWARD_POSITION = 0.5//0 degrees 0.7
+    var HIGHER_LIMIT = 0.980//155 turning right 0.9
+    var LOWER_LIMIT = 0.00//155 turing left  0.9 0.048
+    var FORWARD_POSITION = 0.49//0 degrees 0.7 0.510
     var offset = 0.038
 
     private lateinit var servoTurretRight: ServoImplEx//axon max mk2 gear ratio 24-50
@@ -21,6 +23,9 @@ object Turret {
     fun init(hardwareMap: HardwareMap) {
         servoTurretRight = hardwareMap.get(ServoImplEx::class.java, "servoTurretRight")
         servoTurretLeft = hardwareMap.get(ServoImplEx::class.java, "servoTurretLeft")
+
+        servoTurretRight.direction = Servo.Direction.REVERSE
+        servoTurretLeft.direction = Servo.Direction.REVERSE
 
         servoTurretRight.pwmRange = PwmRange(500.0, 2500.0)
         servoTurretLeft.pwmRange = PwmRange(500.0, 2500.0)
@@ -80,7 +85,7 @@ object Turret {
 
         // map angle → servo
         val servoPosition =
-            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.402  + offset)
+            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.405  + offset)
 
         setPosition(servoPosition)
     }
@@ -112,7 +117,7 @@ object Turret {
         val fieldVy = velocityX * kotlin.math.sin(robotHeading) + velocityY * kotlin.math.cos(robotHeading)
 
         // 🔥 lookahead time (TUNE THIS)
-        val lookaheadTime = 0.36//0.36
+        val lookaheadTime = 0.25//0.36
 
         val compensationSign = if (allianceColour == Colours.BLUE) -1.0 else 1.0
 
@@ -134,7 +139,7 @@ object Turret {
 
         // map angle → servo position
         val servoPosition =
-            FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.402 + offset
+            FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.405 + offset
 
         setPosition(servoPosition.coerceIn(LOWER_LIMIT, HIGHER_LIMIT))
     }

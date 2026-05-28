@@ -32,17 +32,17 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
     fun stopMidTrajectory() {
         follower.holdPoint(follower.pose)
     }
-    private val shootPreload = serial(
+    private val shootSeq = serial(
         execute {
             Intake.stop()
-            Shooter.setRPM(3955.0)
+            Shooter.setRPM(4175.0)
             Hood.setPosition(0.5)
             actionQueue.add(100) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
-                actionQueue.add(400) {
+                actionQueue.add(300) {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(0.65)
-                    actionQueue.add(500)
+                    actionQueue.add(700)
                     {
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
                     }
@@ -52,21 +52,21 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             }
         }
     )
-
-    private val shootSeq = serial(
+    private val shootPreload = serial(
         execute {
             Intake.stop()
-            Shooter.setRPM(4075.0)//4025 for battery
+            Shooter.setRPM(4075.0)//30
             Hood.setPosition(0.5)
             actionQueue.add(100) {
                 Wicket.setPosition(Wicket.OPEN_POSITION)
-                actionQueue.add(400) {
+                actionQueue.add(300) {
                     Intake.setPowerMain(1.0)
                     Intake.setPowerSupport(0.65)
-                    actionQueue.add(500)
+                    actionQueue.add(700)
                     {
                         Wicket.setPosition(Wicket.CLOSE_POSITION)
                     }
+
                 }
 
             }
@@ -74,27 +74,25 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
     )
 
     private val preCollectSeq = serial(
-        execute{
-            Joint.setPosition(Joint.COLLECT_POSITION)
-        },
+        execute{Joint.setPosition(Joint.FAR_POSITION)},
         execute { Intake.setPowerMain(1.0) },
-        execute { Intake.setPowerSupport(0.8) },
+        execute { Intake.setPowerSupport(0.7) },
     )
 
     private val afterCollectSeq = serial(
         execute {
-            Intake.setPowerMain(0.3)
-            Intake.setPowerSupport(0.1)
-        }
-    )
-    private val chargePreload = serial(
-        execute{
-            Shooter.setRPM(3955.0)
+            Intake.setPowerMain(1.0)
+            Intake.setPowerSupport(0.3)
         }
     )
     private val charge = serial(
         execute{
-            Shooter.setRPM(4000.0)
+            Shooter.setRPM(4175.0)
+        }
+    )
+    private val chargePreload = serial(
+        execute{
+            Shooter.setRPM(4075.0)
         }
     )
 
@@ -105,7 +103,7 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
         task = serial(
             execute{Wicket.setPosition(Wicket.CLOSE_POSITION)},//preload -1
             chargePreload,
-            execute{Turret.setPosition(0.517)},
+            execute{Turret.setPosition(0.56)},
             execute{goTo(90.0,16.0,90.0)},
             sleepms(700),
             shootPreload,
@@ -117,12 +115,12 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             preCollectSeq,
             execute { goTo(129.0, 37.0, 0.0) },//collected
             sleepms(1000),
-            execute{Turret.setPosition(0.25)},//
+            execute{Turret.setPosition(0.32)},//
             charge,
             execute{goTo(90.0,12.0,0.0)},//shooting position
             sleepms(500),
             afterCollectSeq,
-            sleepms(1000),
+            sleepms(1250),
             shootSeq,
 
             sleepms(700),
@@ -131,65 +129,61 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
             sleepms(1200),
             execute{goTo(127.0,6.0,0.0)},//human player -3
             sleepms(300),
-            execute{goTo(136.0,6.0,0.0)},//human player -3
+            execute{goTo(136.0,6.0,0.0)},//human player -2
             sleepms(400),
             execute{goTo(90.0,12.0,0.0)},
             afterCollectSeq,
-            sleepms(1300),
+            sleepms(1250),
             shootSeq,
 
-            sleepms(800),
+
+            sleepms(700),
             preCollectSeq,
-            execute{goTo(134.0,6.0,0.0)},//human player -4
-            sleepms(1600),
-            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute{goTo(136.0,6.0,40.0)},//human player -4
+            sleepms(1000),
+            execute{goTo(136.0,43.0,40.0)},//human player -4
+            sleepms(1000),
             execute{goTo(90.0,12.0,0.0)},
             afterCollectSeq,
-            sleepms(1300),
+            sleepms(1400),
             shootSeq,
 
-            sleepms(800),
+            sleepms(700),
             preCollectSeq,
-            execute{goTo(134.0,18.0,0.0)},//human player -5
-            sleepms(1600),
-            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute{goTo(136.0,6.0,40.0)},//human player -5
+            sleepms(1000),
+            execute{goTo(136.0,43.0,40.0)},//human player -5
+            sleepms(1000),
             execute{goTo(90.0,12.0,0.0)},
             afterCollectSeq,
-            sleepms(1300),
+            sleepms(1400),
             shootSeq,
 
-            sleepms(800),
+            sleepms(700),
             preCollectSeq,
-            execute{goTo(134.0,6.0,0.0)},//human player -6
-            sleepms(1600),
-            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute{goTo(136.0,6.0,40.0)},//human player -6
+            sleepms(1000),
+            execute{goTo(136.0,43.0,40.0)},//human player -6
+            sleepms(1000),
             execute{goTo(90.0,12.0,0.0)},
             afterCollectSeq,
-            sleepms(1300),
+            sleepms(1400),
             shootSeq,
 
-            sleepms(800),
+            sleepms(700),
             preCollectSeq,
-            execute{goTo(134.0,6.0,0.0)},//human player -7
-            sleepms(1600),
-            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
+            execute{goTo(136.0,6.0,40.0)},//human player -7
+            sleepms(1000),
+            execute{goTo(136.0,43.0,40.0)},//human player -7
+            sleepms(1000),
             execute{goTo(90.0,12.0,0.0)},
             afterCollectSeq,
-            sleepms(1200),
-            shootSeq,
-            sleepms(800),
-            preCollectSeq,
-
-            execute{goTo(134.0,6.0,0.0)},//human player -8
-            sleepms(1600),
-            execute{Joint.setPosition(Joint.COLLECT_POSITION+0.3)},
-            execute{goTo(90.0,12.0,0.0)},
-            afterCollectSeq,
-            sleepms(1200),
+            sleepms(1400),
             shootSeq,
 
-            sleepms(800),
-            execute{goTo(90.0,30.0,0.0)},
+
+            sleepms(700),
+            execute{goTo(120.0,30.0,0.0)},
 
 
             )

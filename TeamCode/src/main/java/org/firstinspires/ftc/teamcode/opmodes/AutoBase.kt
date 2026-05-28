@@ -54,7 +54,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     val offsetRed21 =0.0
     val offsetRed24 =0.00
     val offsetBlue21 = -0.0012
-    val offsetBlue24 = 0.0
+    val offsetBlue24 = 0.005
 @CallSuper
     open fun onInit() {
         gamepadEx1 = GamepadEx(gamepad1)
@@ -98,7 +98,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     var turretOffsetBlue =0.0
 
     fun onStartTick() {
-        turretLock()
+        turretLock()//TODO use this for close
         //Shooter.updateCompensatedPIDF()
         distance = Pinpoint.distance(follower.pose.x,follower.pose.y, allianceColour)
         velox=follower.velocity.xComponent
@@ -113,7 +113,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         follower.update()
         log.add("@X", follower.pose.x)
         log.add("@Y", follower.pose.y)
-        log.add("@Heading", Math.toDegrees(follower.pose.heading))
+        log.add("@Heading cacat", Math.toDegrees(follower.pose.heading))
         log.add("4 distance from"+allianceColour.toString()+"goal" + distance)
 
         task.tick()
@@ -178,7 +178,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         else
         {
             if(Math.toDegrees(rawHeading)<96 && Math.toDegrees(rawHeading)>-60)
-                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,offsetRed24)//TODO tune
+                Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,offsetRed21)//TODO tune
             else
                 Turret.setPosition(Turret.FORWARD_POSITION)
         }

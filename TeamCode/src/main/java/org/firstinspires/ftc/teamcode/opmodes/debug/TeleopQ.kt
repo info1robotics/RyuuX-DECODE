@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.opmodes
+package org.firstinspires.ftc.teamcode.opmodes.debug
 import com.pedropathing.follower.Follower
 import com.pedropathing.geometry.Pose
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.teamcode.common.ActionQueue
-import org.firstinspires.ftc.teamcode.common.AprilTags
 import org.firstinspires.ftc.teamcode.common.AutoConstants
 import org.firstinspires.ftc.teamcode.common.GamepadEx
 import org.firstinspires.ftc.teamcode.common.Log
@@ -21,12 +21,10 @@ import org.firstinspires.ftc.teamcode.subsystems.Joint
 import org.firstinspires.ftc.teamcode.subsystems.Shooter
 import org.firstinspires.ftc.teamcode.subsystems.Turret
 import org.firstinspires.ftc.teamcode.subsystems.Wicket
-import org.firstinspires.ftc.teamcode.subsystems.extra.Limelight
-import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepuntil
-import kotlin.math.absoluteValue
 
-@TeleOp(name = "@Teleop")
-class Teleop : LinearOpMode() {
+@Disabled
+@TeleOp(name = "@TeleopQuantum")
+class TeleopQ : LinearOpMode() {
 
     fun Gamepad.corrected_left_stick_y(): Float = -this.left_stick_y
 
@@ -84,7 +82,7 @@ class Teleop : LinearOpMode() {
             {
                 if(Intake.isFull())
                 {
-                    Intake.setPowerMain(0.95)
+                    Intake.setPowerMain(0.8)
                     Intake.setPowerSupport(0.2)
                 }
                 else if(!Intake.isEmptyTop())
@@ -95,7 +93,7 @@ class Teleop : LinearOpMode() {
                 else
                 {
                     Intake.setPowerMain(1.0)
-                    Intake.setPowerSupport(0.95)
+                    Intake.setPowerSupport(0.8)
                 }
             }
             else if(!transition && !active)
@@ -104,13 +102,10 @@ class Teleop : LinearOpMode() {
             }
 
         }
-        /*
         if(gamepad2.right_bumper || gamepad1.right_stick_y>0)
             Joint.setPosition(Joint.COLLECT_POSITION+0.2)
         else
-
-         */
-        Joint.setPosition(Joint.COLLECT_POSITION)
+            Joint.setPosition(Joint.COLLECT_POSITION)
     }
 
     private fun handleInputPark()
@@ -138,12 +133,11 @@ class Teleop : LinearOpMode() {
 
         if(distance < 205)
             supportConverter = 1.0//previously 1.0
-        else if(distance<240)
+        else if(distance<260)
             supportConverter = 0.9
         else
             supportConverter= 0.8
 
-        far = false
         Hood.setPosition(Hood.calculate(distance))
         if(gamepadEx1.getButtonDown("a") && available)
         {
@@ -153,36 +147,31 @@ class Teleop : LinearOpMode() {
             {
                 Intake.setPowerMain(1.0)
                 Intake.setPowerSupport(supportConverter)
-                actionQueue.add(400)//
+                actionQueue.add(300)//
                 {
                     Shooter.setRPM(0.0)
                     Wicket.setPosition(Wicket.CLOSE_POSITION)
                     transition = false
-                    active = false
                     empty = 1.0
                 }
             }
         }
+
     }
     var turretOffset = 0.0
     var velox=0.0
     var veloy=0.0
     private fun handleInputTurret() {
 
-
-        Pinpoint
         if(gamepadEx2.getButtonDown("y") && !hold) hold=true
         else if(gamepadEx2.getButtonDown("y") && hold) hold=false
 
-
-
-
-        if(!hold /*&& Pinpoint.inBorder(follower.pose.x,follower.pose.y)*/)
+        if(!hold && follower.pose.y>20 && follower.pose.x>20 && follower.pose.x<124)
         {
 
             if(allianceColour==Colours.BLUE)
             {
-                if(Math.toDegrees(correctedHeading)<293 && Math.toDegrees(correctedHeading)>-17) {//138 centered +-155
+                if(Math.toDegrees(correctedHeading)<273 && Math.toDegrees(correctedHeading)>-12) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,correctedHeading,allianceColour,velox,veloy,turretOffset)
                 }
@@ -192,7 +181,7 @@ class Teleop : LinearOpMode() {
                 }
             }
             else {
-                if(Math.toDegrees(rawHeading)<187 && Math.toDegrees(rawHeading)>-123) {//32 centered
+                if(Math.toDegrees(rawHeading)<182 && Math.toDegrees(rawHeading)>-80) {
                     available=true
                     Turret.lockToTarget(follower.pose.x,follower.pose.y,rawHeading,allianceColour,velox,veloy,turretOffset)
                 }
@@ -276,13 +265,13 @@ class Teleop : LinearOpMode() {
                 )
                 wasSelected = true
             }
-            if (gamepad1.dpad_up && allianceColour==Colours.RED) {//TODO RESETS at gate
+            if (gamepad1.dpad_up && allianceColour==Colours.RED) {//TODO RESETS at
                 velOffset = 0.0
-                turretOffset = 0.007
+                turretOffset = 0.000
                 follower.pose = Pose(//116 120 32 for goal
-                    115.0,
-                    76.0,
-                    Math.toRadians(-5.0)
+                    -4.0,
+                    18.0,
+                    Math.toRadians(175.0)
 
                 )
             }
@@ -290,9 +279,9 @@ class Teleop : LinearOpMode() {
                 velOffset = 0.0
                 turretOffset = 0.0
                 follower.pose = Pose(
-                    29.0,
-                    73.0,
-                    Math.toRadians(177.0)
+                    137.0,
+                    -4.0,
+                    Math.toRadians(-0.3)
                 )
             }
 
