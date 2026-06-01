@@ -167,7 +167,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             sleepms(850),
             shootSeq,
 
-            sleepms(600),
+            sleepms(550),
             execute { goTo(44.0, 36.5, 180.0) }, // last spike mark -7
             preCollectSeq,
             sleepms(1300),
@@ -179,7 +179,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             sleepms(700),
             afterCollectSeq,
             execute{Shooter.charge()},
-            sleepms(900),
+            sleepms(800),
             shootSeq,
             sleepms(500),
             execute { goTo(36.0, 83.0, 180.0) },

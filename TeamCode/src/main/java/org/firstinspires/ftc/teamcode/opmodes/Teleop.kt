@@ -104,13 +104,11 @@ class Teleop : LinearOpMode() {
             }
 
         }
-        /*
+
         if(gamepad2.right_bumper || gamepad1.right_stick_y>0)
             Joint.setPosition(Joint.COLLECT_POSITION+0.2)
         else
-
-         */
-        Joint.setPosition(Joint.COLLECT_POSITION)
+            Joint.setPosition(Joint.COLLECT_POSITION)
     }
 
     private fun handleInputPark()
@@ -132,7 +130,7 @@ class Teleop : LinearOpMode() {
             charge = false
 
         if(transition || !Intake.isEmptyTop() || charge)
-            Shooter.setRPM((power + velOffset).coerceIn(0.0,3900.0))
+            Shooter.setRPM((power + velOffset))
         else
             Shooter.setRPM(0.0)
 
@@ -155,7 +153,7 @@ class Teleop : LinearOpMode() {
                 Intake.setPowerSupport(supportConverter)
                 actionQueue.add(400)//
                 {
-                    Shooter.setRPM(0.0)
+                    //Shooter.setRPM(0.0)
                     Wicket.setPosition(Wicket.CLOSE_POSITION)
                     transition = false
                     active = false

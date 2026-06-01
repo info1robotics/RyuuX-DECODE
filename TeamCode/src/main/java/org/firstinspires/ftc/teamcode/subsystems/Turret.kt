@@ -12,9 +12,9 @@ import kotlin.math.PI
 import kotlin.math.atan2
 
 object Turret {
-    var HIGHER_LIMIT = 0.980//155 turning right 0.9
-    var LOWER_LIMIT = 0.00//155 turing left  0.9 0.048
-    var FORWARD_POSITION = 0.49//0 degrees 0.7 0.510
+    var HIGHER_LIMIT = 0.972//155 turning right
+    var LOWER_LIMIT = 0.028//155 turing left  0.9
+    var FORWARD_POSITION = 0.495//0 degrees 0.7
     var offset = 0.038
 
     private lateinit var servoTurretRight: ServoImplEx//axon max mk2 gear ratio 24-50
@@ -85,7 +85,7 @@ object Turret {
 
         // map angle → servo
         val servoPosition =
-            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.405  + offset)
+            (FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.402  + offset)
 
         setPosition(servoPosition)
     }
@@ -139,7 +139,7 @@ object Turret {
 
         // map angle → servo position
         val servoPosition =
-            FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.405 + offset
+            FORWARD_POSITION - (turretAngle / MAX_TURRET_ANGLE) * 0.402 + offset
 
         setPosition(servoPosition.coerceIn(LOWER_LIMIT, HIGHER_LIMIT))
     }
