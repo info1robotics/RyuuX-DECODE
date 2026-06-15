@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Wicket
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.execute
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
+@Disabled
 @Autonomous
 class AutoCloseBluePlayoff : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colours.BLUE) {
     var offset =15.0//TODO tune, this is local doesn t affect other classes

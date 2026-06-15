@@ -1,21 +1,12 @@
-package org.firstinspires.ftc.teamcode.opmodes
+package org.firstinspires.ftc.teamcode.opmodes.auto
 
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder
-import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.pedropathing.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
-import org.firstinspires.ftc.teamcode.common.AutoUtil.p
-import org.firstinspires.ftc.teamcode.common.AutoUtil.rad
 import org.firstinspires.ftc.teamcode.enums.Colours
-import org.firstinspires.ftc.teamcode.subsystems.Controller
-import org.firstinspires.ftc.teamcode.subsystems.extra.Limelight
-import org.firstinspires.ftc.teamcode.tasks.Task
-import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.action
+import org.firstinspires.ftc.teamcode.opmodes.AutoBase
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.execute
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
-import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepuntil
 
 @Autonomous
 class AutoBlank : AutoBase(Pose(0.0,0.0, Math.toRadians(0.0)),Colours.RED) {

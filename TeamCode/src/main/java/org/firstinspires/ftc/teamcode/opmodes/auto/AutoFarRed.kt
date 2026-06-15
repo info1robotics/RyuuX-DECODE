@@ -1,11 +1,9 @@
-package org.firstinspires.ftc.teamcode.opmodes
+package org.firstinspires.ftc.teamcode.opmodes.auto
 
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder
-import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.pedropathing.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.enums.Colours
+import org.firstinspires.ftc.teamcode.opmodes.AutoBase
 import org.firstinspires.ftc.teamcode.subsystems.Hood
 import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.subsystems.Joint
@@ -125,11 +123,11 @@ class AutoFarRed : AutoBase(Pose(90.0, 9.0, Math.toRadians(90.0)),Colours.RED) {
 
             sleepms(700),
             preCollectSeq,
-            execute{goTo(134.0,6.0,0.0)},//human player -3
+            execute{goTo(134.0,6.0,15.0)},//human player -3
             sleepms(1200),
-            execute{goTo(127.0,6.0,0.0)},//human player -3
+            execute{goTo(127.0,6.0,15.0)},//human player -3
             sleepms(300),
-            execute{goTo(136.0,6.0,0.0)},//human player -2
+            execute{goTo(136.0,6.0,15.0)},//human player -2
             sleepms(400),
             execute{goTo(90.0,12.0,0.0)},
             afterCollectSeq,

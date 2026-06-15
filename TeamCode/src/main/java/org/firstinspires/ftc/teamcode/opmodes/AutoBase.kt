@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.common.ActionQueue
 import org.firstinspires.ftc.teamcode.common.GamepadEx
 import org.firstinspires.ftc.teamcode.common.Log
-import org.firstinspires.ftc.teamcode.enums.AutoStartPos
 import org.firstinspires.ftc.teamcode.enums.Colours
 import org.firstinspires.ftc.teamcode.pedro.Constants
 import org.firstinspires.ftc.teamcode.pinpoint.Pinpoint
@@ -16,8 +15,6 @@ import org.firstinspires.ftc.teamcode.pinpoint.Pinpoint
 import org.firstinspires.ftc.teamcode.subsystems.Controller
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.subsystems.Hood
-import org.firstinspires.ftc.teamcode.subsystems.Intake
-import org.firstinspires.ftc.teamcode.subsystems.Joint
 import org.firstinspires.ftc.teamcode.subsystems.Shooter
 import org.firstinspires.ftc.teamcode.subsystems.Turret
 import org.firstinspires.ftc.teamcode.tasks.Task
@@ -55,6 +52,10 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     val offsetRed24 =0.00
     val offsetBlue21 = -0.0012
     val offsetBlue24 = 0.005
+
+    val offsetRedFar = 0.007
+    val offsetBlueFar = -0.0012
+
 @CallSuper
     open fun onInit() {
         gamepadEx1 = GamepadEx(gamepad1)
@@ -99,7 +100,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
 
     fun onStartTick() {
         turretLock()//TODO use this for close
-        //Shooter.updateCompensatedPIDF()
+        //Shooter.updateCompensatedPIDF()//TODO remove if close
         distance = Pinpoint.distance(follower.pose.x,follower.pose.y, allianceColour)
         velox=follower.velocity.xComponent
         veloy=follower.velocity.yComponent
@@ -125,7 +126,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
     override fun runOpMode() {
 
         onInit()
-        instance=this
+        instance =this
 
         while (!isStarted && !isStopRequested) {
             onInitTick()
