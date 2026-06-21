@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx
 
 object  Joint {
 
-    var COLLECT_POSITION = 0.18
+    var COLLECT_POSITION = 0.155
     var FAR_POSITION = COLLECT_POSITION
     var SAFE_POSITION = COLLECT_POSITION+0.22
     var INIT_POSITION = COLLECT_POSITION

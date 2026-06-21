@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto
 
 import com.pedropathing.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.enums.Colours
 import org.firstinspires.ftc.teamcode.opmodes.AutoBase
 import org.firstinspires.ftc.teamcode.subsystems.Intake
@@ -101,15 +102,15 @@ class AutoCloseBlue21Playoff : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0))
             execute { goTo(54.0, 79.0, 180.0) },
             sleepms(300),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(800),
+            sleepms(850),
             shootSeq,//TODO
 
             sleepms(550),
             execute { goTo(26.4, 61.0, 160.0) }, // collect -3 gate
             sleepms(1300),
-            execute { goTo(5.0, 61.0, 160.0) },
+            execute { goTo(6.0, 61.0, 160.0) },
             preCollectSeq,
-            sleepms(1450),
+            sleepms(1300),
             execute { Shooter.charge() },
             execute { goTo(54.0, 79.0, 180.0) },
             sleepms(200),
@@ -117,15 +118,15 @@ class AutoCloseBlue21Playoff : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0))
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(800),
+            sleepms(850),
             shootSeq,
 
             sleepms(550),
             execute { goTo(26.4, 60.8, 160.0) }, // collect -4 gate
             sleepms(1300),
-            execute { goTo(5.0, 60.8, 160.0) },
+            execute { goTo(6.0, 60.8, 160.0) },
             preCollectSeq,
-            sleepms(1350),
+            sleepms(1300),
             execute { Shooter.charge() },
             execute { goTo(54.0, 79.0, 180.0) },
             sleepms(200),
@@ -133,7 +134,7 @@ class AutoCloseBlue21Playoff : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0))
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(800),
+            sleepms(850),
             shootSeq,
 
             sleepms(550),
@@ -147,32 +148,16 @@ class AutoCloseBlue21Playoff : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0))
             execute { goTo(54.0, 79.0, 180.0) },
             sleepms(500),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(800),
+            sleepms(850),
             shootSeq,
 
 
             sleepms(550),
             execute { goTo(26.4, 60.0, 160.0) }, // collect -6 gate
             sleepms(1300),
-            execute { goTo(5.0, 60.0, 160.0) },
+            execute { goTo(6.0, 60.0, 160.0) },
             preCollectSeq,
-            sleepms(1350),
-            execute { Shooter.charge() },
-            execute { goTo(54.0, 79.0, 180.0) },
-            sleepms(200),
-            execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.2) },
-            sleepms(500),
-            afterCollectSeq,
-            reverse,
-            sleepms(800),
-            shootSeq,
-
-            sleepms(550),
-            execute { goTo(26.4, 60.0, 160.0) }, // collect -6 gate
             sleepms(1300),
-            execute { goTo(5.0, 60.0, 160.0) },
-            preCollectSeq,
-            sleepms(1350),
             execute { Shooter.charge() },
             execute { goTo(54.0, 79.0, 180.0) },
             sleepms(200),
@@ -182,6 +167,24 @@ class AutoCloseBlue21Playoff : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0))
             reverse,
             sleepms(750),
             shootSeq,
+
+            sleepms(550),
+            execute { goTo(26.4, 60.0, 160.0) }, // collect -7 gate
+            sleepms(1300),
+            execute { goTo(6.0, 60.0, 160.0) },
+            preCollectSeq,
+            sleepms(1300),
+            execute { Shooter.charge() },
+            execute { goTo(54.0, 79.0, 180.0) },
+            sleepms(200),
+            execute { Joint.setPosition(Joint.COLLECT_POSITION + 0.2) },
+            sleepms(500),
+            afterCollectSeq,
+            reverse,
+            sleepms(750),
+            shootSeq,
+            sleepms(500),
+            execute { goTo(36.0, 83.0, 180.0) },
 
 
             //TODO add the 7ht cycle

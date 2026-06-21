@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Wicket
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.execute
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
-@Disabled
 @Autonomous
 class AutoCloseRed21 : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {//32 cm from tile intersection
 var offset =45.0//TODO tune, this is local doesn t affect other classes
@@ -89,7 +88,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             preCollectSeq,
             sleepms(1150),
             execute{Turret.setPosition(0.319)},
-            execute{ goTo(111.7,63.3,0.0)},//collectopen gate at x=118 y=61.2
+            execute{ goTo(112.5,63.3,0.0)},//collectopen gate at x=118 y=61.2
             sleepms(500),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},
@@ -102,9 +101,9 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             shootSeq,//TODO calibrate the gate position y
 
             sleepms(550),
-            execute{ goTo(103.0,59.6,20.0)},//
+            execute{ goTo(103.0,59.3,20.0)},//
             sleepms(1200),
-            execute{ goTo(124.9,59.6,20.0)},//collect 3
+            execute{ goTo(123.5,59.3,20.0)},//collect 3
             preCollectSeq,
             sleepms(1500),
             execute{Shooter.charge()},
@@ -118,9 +117,9 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             shootSeq,
 
             sleepms(600),
-            execute{ goTo(103.0,59.6,20.0)},//
+            execute{ goTo(103.0,59.3,20.0)},//
             sleepms(1300),//wait for flow
-            execute{ goTo(124.9,59.6,20.0)},//collect -4
+            execute{ goTo(123.5,59.3,20.0)},//collect -4
             preCollectSeq,
             sleepms(1800),//wait at gate
             execute{Shooter.charge()},
@@ -150,9 +149,9 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,59.6,20.0)},//
+            execute{ goTo(103.0,59.3,20.0)},//
             sleepms(1300),
-            execute{ goTo(124.9,59.6,20.0)},//collect -6
+            execute{ goTo(123.5,59.3,20.0)},//collect -6
             preCollectSeq,
             sleepms(1600),//wait at gate
             execute{Shooter.charge()},
@@ -170,7 +169,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             execute { goTo(93.0, 37.8, 0.0) }, // last spike mark -7
             preCollectSeq,
             sleepms(1200),
-            execute { goTo(120.0, 37.8, 0.0) },//collected
+            execute { goTo(122.0, 37.8, 0.0) },//collected
             sleepms(700),
             execute{ goTo(82.0,83.0,0.0)},
             sleepms(200),

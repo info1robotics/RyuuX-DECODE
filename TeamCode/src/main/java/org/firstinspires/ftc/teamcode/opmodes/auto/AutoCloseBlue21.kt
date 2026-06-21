@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Wicket
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.execute
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
-@Disabled
 @Autonomous
 class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colours.BLUE) {
     var offset =15.0//TODO tune, this is local doesn t affect other classes
@@ -109,7 +108,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             sleepms(550),
             execute { goTo(26.4, 61.0, 160.0) }, // collect -3 gate
             sleepms(1300),
-            execute { goTo(5.0, 61.0, 160.0) },
+            execute { goTo(6.0, 61.0, 160.0) },
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
@@ -125,7 +124,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             sleepms(550),
             execute { goTo(26.4, 60.8, 160.0) }, // collect -4 gate
             sleepms(1300),
-            execute { goTo(5.0, 60.8, 160.0) },
+            execute { goTo(6.0, 60.8, 160.0) },
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
@@ -156,7 +155,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             sleepms(550),
             execute { goTo(26.4, 60.0, 160.0) }, // collect -6 gate
             sleepms(1300),
-            execute { goTo(5.0, 60.0, 160.0) },
+            execute { goTo(6.0, 60.0, 160.0) },
             preCollectSeq,
             sleepms(1450),
             execute { Shooter.charge() },
@@ -187,7 +186,6 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
             execute { goTo(36.0, 83.0, 180.0) },
 
 
-            //TODO add the 7ht cycle
 
             sleepms(999999999)
         )

@@ -114,7 +114,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
         follower.update()
         log.add("@X", follower.pose.x)
         log.add("@Y", follower.pose.y)
-        log.add("@Heading cacat", Math.toDegrees(follower.pose.heading))
+        log.add("@Heading", Math.toDegrees(follower.pose.heading))
         log.add("4 distance from"+allianceColour.toString()+"goal" + distance)
 
         task.tick()

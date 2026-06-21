@@ -137,9 +137,9 @@ class Teleop : LinearOpMode() {
         if(distance < 205)
             supportConverter = 1.0//previously 1.0
         else if(distance<240)
-            supportConverter = 0.9
+            supportConverter = 0.95
         else
-            supportConverter= 0.8
+            supportConverter= 0.83
 
         far = false
         Hood.setPosition(Hood.calculate(distance))
@@ -304,9 +304,9 @@ class Teleop : LinearOpMode() {
             else if(gamepadEx1.getButtonDown("bumper_left"))
                 turretOffset-=0.007
 
-            delay = if(distance<=175) 50
-            else if(distance <200) 100
-            else 300
+            delay = if(distance<=175) 0
+            else if(distance <200) 50
+            else 150
 
             rawHeading = follower.pose.heading
             correctedHeading = if(rawHeading < 0)

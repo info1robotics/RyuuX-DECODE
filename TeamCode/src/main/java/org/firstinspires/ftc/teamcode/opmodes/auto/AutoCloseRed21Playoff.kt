@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto
 
 import com.pedropathing.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.enums.Colours
 import org.firstinspires.ftc.teamcode.opmodes.AutoBase
 import org.firstinspires.ftc.teamcode.subsystems.Intake
@@ -79,7 +80,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             execute{ goTo(88.0,93.0,45.0)},//preload-1
             execute{Shooter.charge()},
             execute{Intake.setPowerMain(0.8)},
-            sleepms(800),
+            sleepms(850),
             shootSeq,
             sleepms(600),
 
@@ -87,7 +88,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             preCollectSeq,
             sleepms(1150),
             execute{Turret.setPosition(0.319)},
-            execute{ goTo(111.7,63.3,0.0)},//collectopen gate at x=118 y=61.2
+            execute{ goTo(112.5,63.3,0.0)},//collectopen gate at x=118 y=61.2
             sleepms(500),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},
@@ -96,13 +97,13 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             execute{ goTo(82.0,83.0,0.0)},//shoot
             sleepms(200),
             execute{Joint.setPosition(Joint.COLLECT_POSITION+0.2)},
-            sleepms(800),
+            sleepms(950),
             shootSeq,//TODO calibrate the gate position y
 
             sleepms(550),
-            execute{ goTo(103.0,59.6,20.0)},//
+            execute{ goTo(103.0,59.3,20.0)},//
             sleepms(1200),
-            execute{ goTo(124.9,59.6,20.0)},//collect 3
+            execute{ goTo(123.5,59.3,20.0)},//collect 3
             preCollectSeq,
             sleepms(1500),
             execute{Shooter.charge()},
@@ -112,13 +113,13 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(700),
+            sleepms(800),
             shootSeq,
 
             sleepms(600),
-            execute{ goTo(103.0,59.6,20.0)},//
-            sleepms(1300),//wait for flow
-            execute{ goTo(124.9,59.6,20.0)},//collect -4
+            execute{ goTo(103.0,59.3,20.0)},//
+            sleepms(1100),//wait for flow
+            execute{ goTo(123.5,59.3,20.0)},//collect -4
             preCollectSeq,
             sleepms(1500),//wait at gate
             execute{Shooter.charge()},
@@ -128,7 +129,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(700),
+            sleepms(800),
             shootSeq,
 
             sleepms(600),
@@ -148,9 +149,9 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,59.6,20.0)},//
+            execute{ goTo(103.0,59.3,20.0)},//
             sleepms(1300),
-            execute{ goTo(124.9,59.6,20.0)},//collect -6
+            execute{ goTo(123.5,59.3,20.0)},//collect -6
             preCollectSeq,
             sleepms(1500),//wait at gate
             execute{Shooter.charge()},
@@ -160,15 +161,15 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(700),
+            sleepms(750),
             shootSeq,
 
 
             sleepms(600),
             execute{ Joint.setPosition(Joint.COLLECT_POSITION) },
-            execute{ goTo(103.0,59.6,20.0)},//
+            execute{ goTo(103.0,59.3,20.0)},//
             sleepms(1300),
-            execute{ goTo(124.9,59.6,20.0)},//collect -7
+            execute{ goTo(123.5,59.3,20.0)},//collect -7
             preCollectSeq,
             sleepms(1500),//wait at gate
             execute{Shooter.charge()},
@@ -178,7 +179,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             sleepms(500),
             afterCollectSeq,
             reverse,
-            sleepms(700),
+            sleepms(750),
             shootSeq,
 
             sleepms(450),
