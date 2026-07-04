@@ -88,7 +88,7 @@ class AutoCloseBlue21 : AutoBase(Pose(26.0, 121.0, Math.toRadians(138.0)),Colour
 
             sleepms(850),
             shootSeq,
-            sleepms(610),
+            sleepms(710),
 
             execute { goTo(45.0, 62.2, 180.0) }, // pre collect -2
             preCollectSeq,

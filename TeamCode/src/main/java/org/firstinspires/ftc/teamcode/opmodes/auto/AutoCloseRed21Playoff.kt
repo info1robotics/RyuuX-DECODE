@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.serial
 import org.firstinspires.ftc.teamcode.tasks.TaskBuilder.sleepms
 @Autonomous
 class AutoCloseRed21Playoff : AutoBase(Pose(120.0,123.0, 32.0),Colours.RED) {//32 cm from tile intersection
-var offset =45.0//TODO tune, this is local doesn t affect other classes
+var offset = 45.0//TODO tune, this is local doesn t affect other classes
     fun turnTo(degrees: Double) { // if you want to turn right, use negative degrees
         val temp = Pose(follower.pose.x, follower.pose.y, Math.toRadians(degrees))
         follower.holdPoint(temp)
@@ -88,7 +88,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             preCollectSeq,
             sleepms(1150),
             execute{Turret.setPosition(0.319)},
-            execute{ goTo(112.5,63.3,0.0)},//collectopen gate at x=118 y=61.2
+            execute{ goTo(111.0,63.3,0.0)},//collectopen gate at x=118 y=61.2
             sleepms(500),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},

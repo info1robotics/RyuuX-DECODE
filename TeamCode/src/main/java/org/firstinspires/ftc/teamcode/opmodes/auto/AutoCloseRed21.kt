@@ -88,7 +88,7 @@ var offset =45.0//TODO tune, this is local doesn t affect other classes
             preCollectSeq,
             sleepms(1150),
             execute{Turret.setPosition(0.319)},
-            execute{ goTo(112.5,63.3,0.0)},//collectopen gate at x=118 y=61.2
+            execute{ goTo(111.0,63.3,0.0)},//collectopen gate at x=118 y=61.2
             sleepms(500),
             afterCollectSeq,
             //execute{Turret.setPosition(0.75)},

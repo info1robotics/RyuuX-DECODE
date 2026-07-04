@@ -50,7 +50,7 @@ abstract class AutoBase(private val startPose: Pose = Pose(0.0, 0.0, Math.toRadi
 
     val offsetRed21 =0.0
     val offsetRed24 =0.00
-    val offsetBlue21 = -0.0012
+    val offsetBlue21 = -0.0008
     val offsetBlue24 = 0.005
 
     val offsetRedFar = 0.007
